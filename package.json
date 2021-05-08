@@ -1,0 +1,27 @@
+{
+  "name": "miaam-ecs",
+  "version": "0.0.1",
+  "description": "ECS Framework by Miaam",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-Miaam/miaam-ecs.git"
+  },
+  "keywords": [
+    "Entity",
+    "Component",
+    "System",
+    "Miaam",
+    "Web",
+    "JavaScript"
+  ],
+  "author": "Noman5237",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Team-Miaam/miaam-ecs/issues"
+  },
+  "homepage": "https://github.com/Team-Miaam/miaam-ecs#readme"
+}
