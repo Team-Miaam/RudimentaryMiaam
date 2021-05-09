@@ -1,43 +1,45 @@
 {
-  "name": "miaam-ecs",
-  "version": "0.0.1",
-  "description": "ECS Framework by Miaam",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-		"lint": "eslint ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Team-Miaam/miaam-ecs.git"
-  },
-  "keywords": [
-    "Entity",
-    "Component",
-    "System",
-    "Miaam",
-    "Web",
-    "JavaScript"
-  ],
-  "author": "Noman5237",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Team-Miaam/miaam-ecs/issues"
-  },
-  "homepage": "https://github.com/Team-Miaam/miaam-ecs#readme",
-  "devDependencies": {
-    "@babel/core": "^7.14.0",
-    "@babel/eslint-parser": "^7.13.14",
-    "@babel/eslint-plugin": "^7.13.16",
-    "@babel/preset-env": "^7.14.1",
-    "babel-loader": "^8.2.2",
-    "eslint": "^7.26.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.2.1",
-    "webpack": "^5.36.2",
-    "webpack-cli": "^4.7.0"
-  }
+	"name": "miaam-ecs",
+	"version": "0.0.1",
+	"description": "ECS Framework by Miaam",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"format": "prettier --write .",
+		"lint": "eslint .",
+		"build": "webpack"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Team-Miaam/miaam-ecs.git"
+	},
+	"keywords": [
+		"Entity",
+		"Component",
+		"System",
+		"Miaam",
+		"Web",
+		"JavaScript"
+	],
+	"author": "Noman5237",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Team-Miaam/miaam-ecs/issues"
+	},
+	"homepage": "https://github.com/Team-Miaam/miaam-ecs#readme",
+	"devDependencies": {
+		"@babel/core": "^7.14.0",
+		"@babel/eslint-parser": "^7.13.14",
+		"@babel/eslint-plugin": "^7.13.16",
+		"@babel/preset-env": "^7.14.1",
+		"babel-loader": "^8.2.2",
+		"eslint": "^7.26.0",
+		"eslint-config-airbnb-base": "^14.2.1",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-import": "^2.22.1",
+		"eslint-plugin-prettier": "^3.4.0",
+		"prettier": "^2.2.1",
+		"webpack": "^5.36.2",
+		"webpack-cli": "^4.7.0"
+	}
 }
