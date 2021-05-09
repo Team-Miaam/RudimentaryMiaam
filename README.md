@@ -1,3 +1,3 @@
-# miaam-ecs
+# js-base-starter
 
-ECS Framework by Miaam
+JS Starter for Miaam Projects
