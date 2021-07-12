@@ -1,4 +1,10 @@
 module.exports = {
 	mode: 'development',
-	entry: './index.js',
+	target: 'web',
+	entry: {
+		index: './index.js',
+	},
+	watchOptions: {
+		ignored: '/node_modules/',
+	},
 };
