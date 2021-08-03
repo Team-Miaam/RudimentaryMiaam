@@ -1,8 +1,8 @@
 {
-	"name": "miaam-ecs",
+	"name": "miaam",
 	"version": "0.0.1",
 	"description": "ECS Framework by Miaam",
-	"main": "index.js",
+	"main": "./dist/index.js",
 	"scripts": {
 		"format": "prettier --write .",
 		"lint": "eslint .",
@@ -22,7 +22,7 @@
 		"Web",
 		"JavaScript"
 	],
-	"author": "Noman5237",
+	"author": "Team Miaam",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/Team-Miaam/miaam-ecs/issues"
