@@ -1,4 +1,6 @@
-import hello from './src/hello.js';
-import hi from './src/hi.js';
+import GameManager from './src/manager/gameManager.js';
+import SceneManager from './src/manager/sceneManager.js';
+import Scene from './src/core/scene.js';
+import Entity from './src/core/entity.js';
 
-export { hello, hi };
+export { GameManager, SceneManager, Scene, Entity };

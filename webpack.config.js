@@ -1,3 +1,5 @@
+// const TerserPlugin = require('terser-webpack-plugin');
+
 module.exports = {
 	mode: 'development',
 	target: 'web',
@@ -11,6 +13,17 @@ module.exports = {
 			type: 'umd',
 		},
 	},
+	// optimization: {
+	// 	minimizer: [
+	// 		new TerserPlugin({
+	// 			terserOptions: {
+	// 				format: {
+	// 					comments: false,
+	// 				},
+	// 			},
+	// 		}),
+	// 	],
+	// },
 	watch: true,
 	watchOptions: {
 		ignored: '/node_modules/',
