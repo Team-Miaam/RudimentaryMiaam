@@ -26,20 +26,21 @@ class SceneManager {
 	#scenes;
 
 	constructor() {
-		if (this.#initialized) {
+		if (SceneManager.#initialized) {
 			throw new Error('Class constructor is private. Use getInstance to get an instance.');
 		}
 		this.#scenes = {};
 		this.#gameManager = GameManager.getInstance();
+		SceneManager.#initialized = true;
+		SceneManager.#instance = this;
 	}
 
 	/**
 	 * @returns {SceneManager}
 	 */
 	static getInstance() {
-		if (this.#initialized) {
+		if (!this.#initialized) {
 			this.#instance = new SceneManager();
-			this.#initialized = true;
 		}
 		return this.#instance;
 	}

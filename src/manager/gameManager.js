@@ -29,18 +29,19 @@ class GameManager {
 	 * @constructor
 	 */
 	constructor() {
-		if (this.#initialized) {
-			throw new Error('Class constructor is private. Use getInstance to get an instance.');
+		if (GameManager.#initialized) {
+			throw new Error('Use getInstance to get an instance.');
 		}
+		GameManager.#initialized = true;
+		GameManager.#instance = this;
 	}
 
 	/**
 	 * @returns {GameManager}
 	 */
 	static getInstance() {
-		if (this.#initialized) {
+		if (!this.#initialized) {
 			this.#instance = new GameManager();
-			this.#initialized = true;
 		}
 		return this.#instance;
 	}
@@ -58,9 +59,9 @@ class GameManager {
 	 *
 	 * @returns {Application} the main application
 	 */
-	getApp() {
-		return this.#app;
-	}
+	// getApp() {
+	// 	return this.#app;
+	// }
 }
 
 export default GameManager;
