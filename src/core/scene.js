@@ -1,3 +1,5 @@
+import Loader from '../loader/loader.js';
+
 class Scene {
 	/**
 	 * whether the scene is active or not
@@ -25,11 +27,22 @@ class Scene {
 	 * View of the scene */
 	#view;
 
+	#loader;
+
 	constructor() {
-		this.isActive = false;
-		// load the assets
+		this.assets = [];
+		this.resources = {};
+		this.#active = false;
+		this.#isCreated = false;
 		this.#entities = {};
-		// set the default view to black
+		this.onAwake();
+		this.#loader = new Loader();
+		this.#loader.loadAssets(this.assets);
+		this.#loader.onComplete.add((loader, resources) => {
+			console.log('all complete', this.#loader);
+			this.onStart();
+			this.#isCreated = true;
+		});
 	}
 
 	onAwake() {}
