@@ -80,6 +80,10 @@ class Scene {
 	setView(view) {
 		this.#view = view;
 	}
+
+	getLoadedAssets() {
+		return this.#loader.loadedAssets;
+	}
 }
 
 export default Scene;
