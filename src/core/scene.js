@@ -11,6 +11,11 @@ class Scene {
 	assets;
 
 	/**
+	 * scene is created with all resources loaded
+	 */
+	#isCreated;
+
+	/**
 	 * entities of the scene
 	 */
 	#entities;
@@ -27,7 +32,9 @@ class Scene {
 		// set the default view to black
 	}
 
-	onCreate() {}
+	onAwake() {}
+
+	onStart() {}
 
 	onUpdate(ticker) {
 		Object.entries(this.#entities).forEach((entity) => {
@@ -42,11 +49,13 @@ class Scene {
 	}
 
 	setIsActive(active) {
-		this.#active = active;
+		if (this.#isCreated) {
+			this.#active = active;
+		}
 	}
 
 	addEntity(name, entity) {
-		entity.onCreate();
+		entity.onStart();
 		this.#entities[name] = entity;
 	}
 
