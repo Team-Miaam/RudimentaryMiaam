@@ -12,7 +12,6 @@ const loadTileset = (loader, assets, asset) => {
 			tilesets[resource.name] = resource;
 			const resolvedPath = resolvePath(asset.url, resource.data.image);
 			const resourceName = getFileNameWithoutExtension(resolvedPath);
-			console.log(resolvedPath);
 			assets.push({
 				name: resourceName,
 				url: resolvedPath,

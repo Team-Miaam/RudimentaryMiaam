@@ -1,13 +1,5 @@
 import { Loader as PIXILoader } from 'pixi.js';
-import loadImage from './imageLoader.js';
-import loadMap from './mapLoader.js';
-import loadTileset from './tilesetLoader.js';
-
-const assetTypeLoaderRegistry = {
-	map: loadMap,
-	tileset: loadTileset,
-	image: loadImage,
-};
+import assetTypeLoaderRegistry from './loaderType.js';
 
 class Loader extends PIXILoader {
 	loadedAssets;
