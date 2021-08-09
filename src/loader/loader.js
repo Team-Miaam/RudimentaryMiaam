@@ -1,11 +1,5 @@
 import { Loader as PIXILoader } from 'pixi.js';
-import loadMap from './mapLoader.js';
-import loadTileset from './tilesetLoader.js';
-
-const assetTypeLoaderRegistry = {
-	map: loadMap,
-	tileset: loadTileset,
-};
+import assetTypeLoaderRegistry from './loaderType.js';
 
 class Loader extends PIXILoader {
 	loadedAssets;
@@ -22,10 +16,10 @@ class Loader extends PIXILoader {
 			const asset = assets[noOfAssetsLoaded];
 			const { parent } = asset;
 			if (parent) {
-				if (!this.loadedAssets[`${parent.type}s`][parent.name][`${asset.type}s`]) {
-					this.loadedAssets[`${parent.type}s`][parent.name][`${asset.type}s`] = {};
+				if (!parent[`${asset.type}s`]) {
+					parent[`${asset.type}s`] = {};
 				}
-				this.loadedAssets[`${parent.type}s`][parent.name][`${asset.type}s`][asset.name] = {};
+				parent[`${asset.type}s`][asset.name] = {};
 			} else if (!this.loadedAssets[`${asset.type}s`]) {
 				this.loadedAssets[`${asset.type}s`] = {};
 				this.loadedAssets[`${asset.type}s`][asset.name] = {};

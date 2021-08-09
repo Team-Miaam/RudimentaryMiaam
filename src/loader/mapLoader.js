@@ -1,4 +1,4 @@
-import { getFileNameWithoutExtension, resolvePath } from './path.js';
+import { getFileNameWithoutExtension, resolvePath } from '../util/path.js';
 
 const loadMap = (loader, assets, asset) => {
 	loader.add(asset.name, asset.url);
@@ -21,7 +21,7 @@ const loadMap = (loader, assets, asset) => {
 					name: resourceName,
 					url: resolvedPath,
 					type: 'tileset',
-					parent: asset,
+					parent: resource,
 				});
 			});
 		}

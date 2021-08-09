@@ -54,7 +54,9 @@ class Scene {
 		});
 	}
 
-	onDestroy() {}
+	onDestroy() {
+		this.#loader.destroy();
+	}
 
 	isActive() {
 		return this.#active;
