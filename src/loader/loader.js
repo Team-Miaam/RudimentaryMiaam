@@ -20,10 +20,16 @@ class Loader extends PIXILoader {
 
 		const loadAsset = (index) => {
 			const asset = assets[noOfAssetsLoaded];
-			if (!this.loadedAssets[`${asset.type}s`]) {
+			const { parent } = asset;
+			if (parent) {
+				if (!this.loadedAssets[`${parent.type}s`][parent.name][`${asset.type}s`]) {
+					this.loadedAssets[`${parent.type}s`][parent.name][`${asset.type}s`] = {};
+				}
+				this.loadedAssets[`${parent.type}s`][parent.name][`${asset.type}s`][asset.name] = {};
+			} else if (!this.loadedAssets[`${asset.type}s`]) {
 				this.loadedAssets[`${asset.type}s`] = {};
+				this.loadedAssets[`${asset.type}s`][asset.name] = {};
 			}
-			this.loadedAssets[`${asset.type}s`][asset.name] = {};
 			assetTypeLoaderRegistry[asset.type](this, assets, asset);
 		};
 

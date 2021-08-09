@@ -39,7 +39,6 @@ class Scene {
 		this.#loader = new Loader();
 		this.#loader.loadAssets(this.assets);
 		this.#loader.onComplete.add((loader, resources) => {
-			console.log('all complete', this.#loader);
 			this.onStart();
 			this.#isCreated = true;
 		});
