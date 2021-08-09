@@ -1,3 +1,5 @@
+import Loader from '../loader/loader.js';
+
 class Scene {
 	/**
 	 * whether the scene is active or not
@@ -11,6 +13,11 @@ class Scene {
 	assets;
 
 	/**
+	 * scene is created with all resources loaded
+	 */
+	#isCreated;
+
+	/**
 	 * entities of the scene
 	 */
 	#entities;
@@ -20,14 +27,26 @@ class Scene {
 	 * View of the scene */
 	#view;
 
+	#loader;
+
 	constructor() {
-		this.isActive = false;
-		// load the assets
+		this.assets = [];
+		this.resources = {};
+		this.#active = false;
+		this.#isCreated = false;
 		this.#entities = {};
-		// set the default view to black
+		this.onAwake();
+		this.#loader = new Loader();
+		this.#loader.loadAssets(this.assets);
+		this.#loader.onComplete.add((loader, resources) => {
+			this.onStart();
+			this.#isCreated = true;
+		});
 	}
 
-	onCreate() {}
+	onAwake() {}
+
+	onStart() {}
 
 	onUpdate(ticker) {
 		Object.entries(this.#entities).forEach((entity) => {
@@ -42,11 +61,13 @@ class Scene {
 	}
 
 	setIsActive(active) {
-		this.#active = active;
+		if (this.#isCreated) {
+			this.#active = active;
+		}
 	}
 
 	addEntity(name, entity) {
-		entity.onCreate();
+		entity.onStart();
 		this.#entities[name] = entity;
 	}
 
@@ -57,6 +78,10 @@ class Scene {
 
 	setView(view) {
 		this.#view = view;
+	}
+
+	getLoadedAssets() {
+		return this.#loader.loadedAssets;
 	}
 }
 
