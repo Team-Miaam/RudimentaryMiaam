@@ -17,6 +17,9 @@ class SceneManager {
 	 */
 	static #initialized = false;
 
+	/**
+	 * @type {GameManager}
+	 */
 	#gameManager;
 
 	/**
@@ -94,7 +97,8 @@ class SceneManager {
 	 * @param {string} sceneName
 	 */
 	setMainView(sceneName) {
-		// TODO: update the app root content
+		const view = this.#scenes[sceneName].getView();
+		this.#gameManager.getApp().stage.addChild(view);
 	}
 }
 export default SceneManager;

@@ -27,15 +27,16 @@ class Scene {
 	 * View of the scene */
 	#view;
 
+	#map;
+
 	#loader;
 
 	constructor() {
 		this.assets = [];
-		this.resources = {};
 		this.#active = false;
 		this.#isCreated = false;
 		this.#entities = {};
-		this.onAwake();
+		this.onCreate();
 		this.#loader = new Loader();
 		this.#loader.loadAssets(this.assets);
 		this.#loader.onComplete.add((loader, resources) => {
@@ -44,7 +45,7 @@ class Scene {
 		});
 	}
 
-	onAwake() {}
+	onCreate() {}
 
 	onStart() {}
 
@@ -82,8 +83,20 @@ class Scene {
 		this.#view = view;
 	}
 
+	setMap(map) {
+		this.#map = map;
+	}
+
 	getLoadedAssets() {
 		return this.#loader.loadedAssets;
+	}
+
+	getMap() {
+		return this.#map;
+	}
+
+	getView() {
+		return this.#view;
 	}
 }
 
