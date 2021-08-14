@@ -59,9 +59,13 @@ class GameManager {
 	 *
 	 * @returns {Application} the main application
 	 */
-	// getApp() {
-	// 	return this.#app;
-	// }
+	getApp() {
+		return this.#app;
+	}
+
+	getWindow() {
+		return this.#app.view;
+	}
 }
 
 export default GameManager;
