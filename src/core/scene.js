@@ -20,6 +20,8 @@ class Scene {
 	/**
 	 * entities of the scene
 	 */
+	entities;
+
 	#entities;
 
 	/**
@@ -33,15 +35,34 @@ class Scene {
 
 	constructor() {
 		this.assets = [];
+		this.entities = [];
 		this.#active = false;
 		this.#isCreated = false;
 		this.#entities = {};
 		this.onCreate();
 		this.#loader = new Loader();
 		this.#loader.loadAssets(this.assets);
-		this.#loader.onComplete.add((loader, resources) => {
-			this.onStart();
+		this.#loader.onComplete.add(() => {
 			this.#isCreated = true;
+		});
+		this.initializeEntities();
+	}
+
+	initializeEntities() {
+		let entitiesLoaded = 0;
+		this.entities.forEach((entity) => {
+			const { type: Type } = entity;
+			const entityObj = new Type({
+				name: entity.name,
+				...entity.args,
+			});
+			entityObj.loader.onComplete.add(() => {
+				entitiesLoaded += 1;
+				this.addEntity(entityObj);
+				if (entitiesLoaded === this.entities.length && this.isCreated()) {
+					this.onStart();
+				}
+			});
 		});
 	}
 
@@ -63,20 +84,23 @@ class Scene {
 		return this.#active;
 	}
 
+	isCreated() {
+		return this.#isCreated;
+	}
+
 	setIsActive(active) {
 		if (this.#isCreated) {
 			this.#active = active;
 		}
 	}
 
-	addEntity(name, entity) {
-		entity.onStart();
-		this.#entities[name] = entity;
+	addEntity(entity) {
+		this.#entities[entity.getName()] = entity;
 	}
 
-	removeEntity(name) {
-		this.#entities[name].onDestroy();
-		delete this.#entities[name];
+	removeEntity(entity) {
+		this.#entities[entity.getName()].onDestroy();
+		delete this.#entities[entity.getName()];
 	}
 
 	setView(view) {
@@ -97,6 +121,14 @@ class Scene {
 
 	getView() {
 		return this.#view;
+	}
+
+	getEntities() {
+		return this.#entities;
+	}
+
+	get entities() {
+		return this.#entities;
 	}
 }
 
