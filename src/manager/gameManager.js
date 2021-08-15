@@ -39,7 +39,7 @@ class GameManager {
 	/**
 	 * @returns {GameManager}
 	 */
-	static getInstance() {
+	static get instance() {
 		if (!this.#initialized) {
 			this.#instance = new GameManager();
 		}
@@ -59,11 +59,11 @@ class GameManager {
 	 *
 	 * @returns {Application} the main application
 	 */
-	getApp() {
+	get app() {
 		return this.#app;
 	}
 
-	getWindow() {
+	get window() {
 		return this.#app.view;
 	}
 }

@@ -33,7 +33,7 @@ class SceneManager {
 			throw new Error('Class constructor is private. Use getInstance to get an instance.');
 		}
 		this.#scenes = {};
-		this.#gameManager = GameManager.getInstance();
+		this.#gameManager = GameManager.instance;
 		SceneManager.#initialized = true;
 		SceneManager.#instance = this;
 	}
@@ -41,7 +41,7 @@ class SceneManager {
 	/**
 	 * @returns {SceneManager}
 	 */
-	static getInstance() {
+	static get instance() {
 		if (!this.#initialized) {
 			this.#instance = new SceneManager();
 		}
@@ -96,9 +96,9 @@ class SceneManager {
 	 * sets the main view to preferred scene
 	 * @param {string} sceneName
 	 */
-	setMainView(sceneName) {
+	set view(sceneName) {
 		const { view } = this.#scenes[sceneName];
-		this.#gameManager.getApp().stage.addChild(view);
+		this.#gameManager.app.stage.addChild(view);
 	}
 }
 export default SceneManager;

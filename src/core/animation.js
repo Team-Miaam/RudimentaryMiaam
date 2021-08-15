@@ -13,12 +13,7 @@ class AnimatedSpriteWState extends AnimatedSprite {
 			tileset.data.image = animationMap.tilesets[tileset.name].images[getFileNameWithoutExtension(tileset.data.image)];
 		});
 		this.#createTextures(animationMap.data);
-		this.setState(animationMap.data.layers[0].name);
-
-		this.anchor.set(0.5);
-		this.animationSpeed = 0.1;
-		this.loop = true;
-		this.play();
+		this.state = animationMap.data.layers[0].name;
 	}
 
 	#createTextures(animationMap) {
@@ -52,8 +47,12 @@ class AnimatedSpriteWState extends AnimatedSprite {
 		});
 	}
 
-	setState(state) {
+	set state(state) {
 		this.textures = this.#states[state];
+		this.anchor.set(0.5);
+		this.animationSpeed = 0.1;
+		this.loop = true;
+		this.play();
 	}
 }
 
