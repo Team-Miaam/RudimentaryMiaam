@@ -12,7 +12,7 @@ class Scene {
 	 * @type {boolean}
 	 * scene is created with all resources loaded
 	 */
-	#isCreated;
+	#created;
 
 	/**
 	 * @type {Object}
@@ -41,7 +41,7 @@ class Scene {
 
 	constructor() {
 		this.#active = false;
-		this.#isCreated = false;
+		this.#created = false;
 		this.preload = {
 			assets: [],
 			entities: [],
@@ -99,11 +99,11 @@ class Scene {
 	}
 
 	get isCreated() {
-		return this.#isCreated;
+		return this.#created;
 	}
 
 	set isCreated(created) {
-		this.#isCreated = created;
+		this.#created = created;
 	}
 
 	get assets() {
@@ -111,7 +111,7 @@ class Scene {
 	}
 
 	addEntity(entity) {
-		this.#entities[entity.getName()] = entity;
+		this.#entities[entity.name] = entity;
 	}
 
 	removeEntity(entity) {
@@ -137,6 +137,10 @@ class Scene {
 
 	get view() {
 		return this.#view;
+	}
+
+	get loader() {
+		return this.#loader;
 	}
 }
 

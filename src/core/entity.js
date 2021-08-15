@@ -5,15 +5,9 @@ class Entity {
 
 	#active;
 
-	#isCreated;
+	#created;
 
 	preload;
-
-	/**
-	 * assets of the entity
-	 */
-
-	assets;
 
 	#transform;
 
@@ -26,20 +20,19 @@ class Entity {
 		this.preload = {
 			assets: [],
 		};
-		this.assets = [];
 		this.#transform = {
 			x: 0,
 			y: 0,
 			rotation: 0,
 		};
 		this.#active = false;
-		this.#isCreated = false;
+		this.#created = false;
 		this.onCreate();
 		this.#loader = new Loader();
 		this.#loader.loadAssets(this.preload.assets);
 		this.#loader.onComplete.add(() => {
 			this.onStart();
-			this.#isCreated = true;
+			this.isCreated = true;
 		});
 	}
 
@@ -47,27 +40,41 @@ class Entity {
 
 	onStart() {}
 
-	onUpdate() {
-		// animate is animation is available
-	}
+	onUpdate() {}
 
 	onDestroy() {}
 
-	isActive() {
+	get name() {
+		return this.#name;
+	}
+
+	get isActive() {
 		return this.#active;
 	}
 
-	isCreated() {
-		return this.#isCreated;
-	}
-
-	setIsActive(active) {
-		if (this.#isCreated) {
+	set isActive(active) {
+		if (this.#created) {
 			this.#active = active;
 		}
 	}
 
-	setTransform({ x, y, rotation }) {
+	get isCreated() {
+		return this.#created;
+	}
+
+	set isCreated(created) {
+		this.#created = created;
+	}
+
+	get assets() {
+		return this.#loader.loadedAssets;
+	}
+
+	get transform() {
+		return this.#transform;
+	}
+
+	set transform({ x, y, rotation }) {
 		this.#transform.x = x;
 		this.#transform.y = y;
 		this.#transform.rotation = rotation;
@@ -75,20 +82,12 @@ class Entity {
 		this.#sprite.y = this.#transform.y;
 	}
 
-	setSprite(sprite) {
-		this.#sprite = sprite;
-	}
-
-	getLoadedAssets() {
-		return this.#loader.loadedAssets;
-	}
-
-	getName() {
-		return this.#name;
-	}
-
-	getSprite() {
+	get sprite() {
 		return this.#sprite;
+	}
+
+	set sprite(sprite) {
+		this.#sprite = sprite;
 	}
 
 	get loader() {

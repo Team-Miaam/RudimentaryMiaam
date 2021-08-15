@@ -6,12 +6,12 @@ class ObjectGroup extends Layer {
 		const { objects } = this.layer;
 		objects.forEach((object) => {
 			const entity = entities[object.name];
-			entity.setTransform({
+			entity.transform = {
 				x: object.x,
 				y: object.y,
 				rotation: object.rotation,
-			});
-			this.addChild(entity.getSprite());
+			};
+			this.addChild(entity.sprite);
 		});
 	}
 }

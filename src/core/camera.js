@@ -67,7 +67,7 @@ class Camera {
 	}
 
 	follow(entity) {
-		const sprite = entity.getSprite();
+		const { sprite } = entity;
 		// Check the sprites position in relation to the inner
 		// boundary. Move the camera to follow the sprite if the sprite
 		// strays outside the boundary
@@ -100,7 +100,7 @@ class Camera {
 
 	// Use the `centerOver` method to center the camera over a sprite
 	centerOver(entity) {
-		const sprite = entity.getSprite();
+		const { sprite } = entity;
 		const halfWidth = sprite.width / 2;
 		const halfHeight = sprite.height / 2;
 		// Center the camera over a sprite

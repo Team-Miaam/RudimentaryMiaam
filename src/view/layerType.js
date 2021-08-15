@@ -1,4 +1,4 @@
-import ObjectGroup from './ObjectGroup.js';
+import ObjectGroup from './objectGroup.js';
 import TileLayer from './tilelayer.js';
 
 const layerTypeRendererRegistry = {
