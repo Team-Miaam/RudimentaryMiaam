@@ -13,13 +13,16 @@ class View extends Container {
 			tileset.data = map.tilesets[tileset.name].data;
 			tileset.data.image = map.tilesets[tileset.name].images[getFileNameWithoutExtension(tileset.data.image)];
 		});
-		const tileset = map.data.tilesets;
-		this.#renderLayers(map.data);
+		this.#renderLayers(scene, map.data);
 	}
 
-	#renderLayers(map) {
+	#renderLayers(scene, map) {
 		this.#layers.forEach((layer) => {
-			const renderedLayerContainer = new layerTypeRendererRegistry[layer.type](layer, map);
+			const renderedLayerContainer = new layerTypeRendererRegistry[layer.type]({
+				scene,
+				map,
+				layer,
+			});
 			this.addChild(renderedLayerContainer);
 		});
 	}

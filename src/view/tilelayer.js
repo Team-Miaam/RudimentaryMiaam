@@ -3,10 +3,11 @@ import { snip } from '../util/spritesheet.js';
 import Layer from './layer.js';
 
 class TileLayer extends Layer {
-	constructSprite(map) {
+	constructSprite() {
+		const { map } = this;
 		const tileset = map.tilesets[0].data;
 		const spritesheet = tileset.image.texture;
-		this.layerData.forEach((gid, index) => {
+		this.layer.data.forEach((gid, index) => {
 			if (gid === 0) {
 				return;
 			}
