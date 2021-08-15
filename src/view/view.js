@@ -7,19 +7,22 @@ class View extends Container {
 
 	constructor(scene) {
 		super();
-		const map = scene.getMap();
+		const map = scene.map;
 		this.#layers = map.data.layers;
 		map.data.tilesets.forEach((tileset) => {
 			tileset.data = map.tilesets[tileset.name].data;
 			tileset.data.image = map.tilesets[tileset.name].images[getFileNameWithoutExtension(tileset.data.image)];
 		});
-		const tileset = map.data.tilesets;
-		this.#renderLayers(map.data);
+		this.#renderLayers(scene, map.data);
 	}
 
-	#renderLayers(map) {
+	#renderLayers(scene, map) {
 		this.#layers.forEach((layer) => {
-			const renderedLayerContainer = new layerTypeRendererRegistry[layer.type](layer, map);
+			const renderedLayerContainer = new layerTypeRendererRegistry[layer.type]({
+				scene,
+				map,
+				layer,
+			});
 			this.addChild(renderedLayerContainer);
 		});
 	}

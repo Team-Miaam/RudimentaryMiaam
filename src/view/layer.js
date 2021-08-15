@@ -1,15 +1,21 @@
 import { Container } from 'pixi.js';
 
 class Layer extends Container {
-	layerData;
+	scene;
 
-	constructor(layerData, map) {
+	map;
+
+	layer;
+
+	constructor({ scene, map, layer }) {
 		super();
-		this.layerData = layerData.data;
-		this.constructSprite(map);
+		this.scene = scene;
+		this.map = map;
+		this.layer = layer;
+		this.constructSprite();
 	}
 
-	constructSprite(map) {}
+	constructSprite() {}
 }
 
 export default Layer;

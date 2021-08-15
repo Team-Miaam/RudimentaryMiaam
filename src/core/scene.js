@@ -1,48 +1,59 @@
 import Loader from '../loader/loader.js';
+import Entity from './entity.js';
 
 class Scene {
 	/**
-	 * whether the scene is active or not
 	 * @type {boolean}
+	 * whether the scene is active or not
 	 */
 	#active;
 
 	/**
-	 * assets of the scene
-	 */
-	assets;
-
-	/**
+	 * @type {boolean}
 	 * scene is created with all resources loaded
 	 */
-	#isCreated;
+	#created;
 
 	/**
+	 * @type {Object}
+	 * all the preloaded objects of the scene
+	 */
+	preload;
+
+	/**
+	 * @type {Array.<Entity>}
 	 * entities of the scene
 	 */
+
 	#entities;
+
+	/**
+	 * map of the scene;
+	 */
+	#map;
 
 	/**
 	 * @type {View}
 	 * View of the scene */
 	#view;
 
-	#map;
-
 	#loader;
 
 	constructor() {
-		this.assets = [];
 		this.#active = false;
-		this.#isCreated = false;
+		this.#created = false;
+		this.preload = {
+			assets: [],
+			entities: [],
+		};
 		this.#entities = {};
 		this.onCreate();
 		this.#loader = new Loader();
-		this.#loader.loadAssets(this.assets);
-		this.#loader.onComplete.add((loader, resources) => {
-			this.onStart();
-			this.#isCreated = true;
+		this.#loader.loadAssets(this.preload.assets);
+		this.#loader.onComplete.add(() => {
+			this.isCreated = true;
 		});
+		this.#initializeEntities();
 	}
 
 	onCreate() {}
@@ -59,44 +70,77 @@ class Scene {
 		this.#loader.destroy();
 	}
 
-	isActive() {
+	#initializeEntities() {
+		let entitiesLoaded = 0;
+		this.preload.entities.forEach((entity) => {
+			const { type: Type } = entity;
+			const entityObj = new Type({
+				name: entity.name,
+				...entity.args,
+			});
+			entityObj.loader.onComplete.add(() => {
+				entitiesLoaded += 1;
+				this.addEntity(entityObj);
+				if (entitiesLoaded === this.preload.entities.length && this.isCreated) {
+					this.onStart();
+				}
+			});
+		});
+	}
+
+	get isActive() {
 		return this.#active;
 	}
 
-	setIsActive(active) {
-		if (this.#isCreated) {
+	set isActive(active) {
+		if (this.isCreated) {
 			this.#active = active;
 		}
 	}
 
-	addEntity(name, entity) {
-		entity.onStart();
-		this.#entities[name] = entity;
+	get isCreated() {
+		return this.#created;
 	}
 
-	removeEntity(name) {
-		this.#entities[name].onDestroy();
-		delete this.#entities[name];
+	set isCreated(created) {
+		this.#created = created;
 	}
 
-	setView(view) {
-		this.#view = view;
-	}
-
-	setMap(map) {
-		this.#map = map;
-	}
-
-	getLoadedAssets() {
+	get assets() {
 		return this.#loader.loadedAssets;
 	}
 
-	getMap() {
+	addEntity(entity) {
+		this.#entities[entity.name] = entity;
+	}
+
+	removeEntity(entity) {
+		this.#entities[entity.getName()].onDestroy();
+		delete this.#entities[entity.getName()];
+	}
+
+	get entities() {
+		return this.#entities;
+	}
+
+	set map(map) {
+		this.#map = map;
+	}
+
+	get map() {
 		return this.#map;
 	}
 
-	getView() {
+	set view(view) {
+		this.#view = view;
+	}
+
+	get view() {
 		return this.#view;
+	}
+
+	get loader() {
+		return this.#loader;
 	}
 }
 
