@@ -63,8 +63,8 @@ class SceneManager {
 	 */
 	startScene(sceneName) {
 		const scene = this.#scenes[sceneName];
-		if (!scene.isActive()) {
-			scene.setIsActive(true);
+		if (!scene.isActive) {
+			scene.isActive = true;
 			// TODO: update the ticker
 		}
 	}
@@ -75,8 +75,8 @@ class SceneManager {
 	 */
 	stopScene(sceneName) {
 		const scene = this.#scenes[sceneName];
-		if (scene.isActive()) {
-			scene.setIsActive(false);
+		if (scene.isActive) {
+			scene.isActive = false;
 			// TODO: update the ticker
 		}
 	}
@@ -97,7 +97,7 @@ class SceneManager {
 	 * @param {string} sceneName
 	 */
 	setMainView(sceneName) {
-		const view = this.#scenes[sceneName].getView();
+		const { view } = this.#scenes[sceneName];
 		this.#gameManager.getApp().stage.addChild(view);
 	}
 }

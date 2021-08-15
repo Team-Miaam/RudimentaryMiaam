@@ -14,10 +14,10 @@ class Camera {
 	#worldHeight;
 
 	constructor(scene, cameraWidth, cameraHeight) {
-		this.#view = scene.getView();
+		this.#view = scene.view;
 		this.#width = cameraWidth;
 		this.#height = cameraHeight;
-		const { data: world } = scene.getMap();
+		const { data: world } = scene.map;
 		this.#worldWidth = world.width * world.tilewidth;
 		this.#worldHeight = world.height * world.tileheight;
 	}

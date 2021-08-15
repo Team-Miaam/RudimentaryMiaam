@@ -7,7 +7,7 @@ class View extends Container {
 
 	constructor(scene) {
 		super();
-		const map = scene.getMap();
+		const map = scene.map;
 		this.#layers = map.data.layers;
 		map.data.tilesets.forEach((tileset) => {
 			tileset.data = map.tilesets[tileset.name].data;

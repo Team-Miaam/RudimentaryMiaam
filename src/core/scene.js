@@ -1,55 +1,57 @@
 import Loader from '../loader/loader.js';
+import Entity from './entity.js';
 
 class Scene {
 	/**
-	 * whether the scene is active or not
 	 * @type {boolean}
+	 * whether the scene is active or not
 	 */
 	#active;
 
 	/**
+	 * @type {boolean}
 	 * scene is created with all resources loaded
 	 */
 	#isCreated;
 
+	/**
+	 * @type {Object}
+	 * all the preloaded objects of the scene
+	 */
 	preload;
 
 	/**
-	 * assets of the scene
-	 */
-	assets;
-
-	/**
+	 * @type {Array.<Entity>}
 	 * entities of the scene
 	 */
-	entities;
 
 	#entities;
+
+	/**
+	 * map of the scene;
+	 */
+	#map;
 
 	/**
 	 * @type {View}
 	 * View of the scene */
 	#view;
 
-	#map;
-
 	#loader;
 
 	constructor() {
+		this.#active = false;
+		this.#isCreated = false;
 		this.preload = {
 			assets: [],
 			entities: [],
 		};
-		this.assets = [];
-		this.entities = [];
-		this.#active = false;
-		this.#isCreated = false;
 		this.#entities = {};
 		this.onCreate();
 		this.#loader = new Loader();
 		this.#loader.loadAssets(this.preload.assets);
 		this.#loader.onComplete.add(() => {
-			this.#isCreated = true;
+			this.isCreated = true;
 		});
 		this.#initializeEntities();
 	}
@@ -79,25 +81,33 @@ class Scene {
 			entityObj.loader.onComplete.add(() => {
 				entitiesLoaded += 1;
 				this.addEntity(entityObj);
-				if (entitiesLoaded === this.preload.entities.length && this.isCreated()) {
+				if (entitiesLoaded === this.preload.entities.length && this.isCreated) {
 					this.onStart();
 				}
 			});
 		});
 	}
 
-	isActive() {
+	get isActive() {
 		return this.#active;
 	}
 
-	isCreated() {
+	set isActive(active) {
+		if (this.isCreated) {
+			this.#active = active;
+		}
+	}
+
+	get isCreated() {
 		return this.#isCreated;
 	}
 
-	setIsActive(active) {
-		if (this.#isCreated) {
-			this.#active = active;
-		}
+	set isCreated(created) {
+		this.#isCreated = created;
+	}
+
+	get assets() {
+		return this.#loader.loadedAssets;
 	}
 
 	addEntity(entity) {
@@ -109,32 +119,24 @@ class Scene {
 		delete this.#entities[entity.getName()];
 	}
 
-	setView(view) {
-		this.#view = view;
+	get entities() {
+		return this.#entities;
 	}
 
-	setMap(map) {
+	set map(map) {
 		this.#map = map;
 	}
 
-	getLoadedAssets() {
-		return this.#loader.loadedAssets;
-	}
-
-	getMap() {
+	get map() {
 		return this.#map;
 	}
 
-	getView() {
+	set view(view) {
+		this.#view = view;
+	}
+
+	get view() {
 		return this.#view;
-	}
-
-	getEntities() {
-		return this.#entities;
-	}
-
-	get entities() {
-		return this.#entities;
 	}
 }
 
