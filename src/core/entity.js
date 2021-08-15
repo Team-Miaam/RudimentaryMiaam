@@ -6,6 +6,9 @@ class Entity {
 	#active;
 
 	#isCreated;
+
+	preload;
+
 	/**
 	 * assets of the entity
 	 */
@@ -20,6 +23,9 @@ class Entity {
 
 	constructor({ name }) {
 		this.#name = name;
+		this.preload = {
+			assets: [],
+		};
 		this.assets = [];
 		this.#transform = {
 			x: 0,
@@ -30,7 +36,7 @@ class Entity {
 		this.#isCreated = false;
 		this.onCreate();
 		this.#loader = new Loader();
-		this.#loader.loadAssets(this.assets);
+		this.#loader.loadAssets(this.preload.assets);
 		this.#loader.onComplete.add(() => {
 			this.onStart();
 			this.#isCreated = true;

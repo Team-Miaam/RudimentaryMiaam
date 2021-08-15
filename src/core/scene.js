@@ -8,14 +8,16 @@ class Scene {
 	#active;
 
 	/**
-	 * assets of the scene
-	 */
-	assets;
-
-	/**
 	 * scene is created with all resources loaded
 	 */
 	#isCreated;
+
+	preload;
+
+	/**
+	 * assets of the scene
+	 */
+	assets;
 
 	/**
 	 * entities of the scene
@@ -34,6 +36,10 @@ class Scene {
 	#loader;
 
 	constructor() {
+		this.preload = {
+			assets: [],
+			entities: [],
+		};
 		this.assets = [];
 		this.entities = [];
 		this.#active = false;
@@ -41,29 +47,11 @@ class Scene {
 		this.#entities = {};
 		this.onCreate();
 		this.#loader = new Loader();
-		this.#loader.loadAssets(this.assets);
+		this.#loader.loadAssets(this.preload.assets);
 		this.#loader.onComplete.add(() => {
 			this.#isCreated = true;
 		});
-		this.initializeEntities();
-	}
-
-	initializeEntities() {
-		let entitiesLoaded = 0;
-		this.entities.forEach((entity) => {
-			const { type: Type } = entity;
-			const entityObj = new Type({
-				name: entity.name,
-				...entity.args,
-			});
-			entityObj.loader.onComplete.add(() => {
-				entitiesLoaded += 1;
-				this.addEntity(entityObj);
-				if (entitiesLoaded === this.entities.length && this.isCreated()) {
-					this.onStart();
-				}
-			});
-		});
+		this.#initializeEntities();
 	}
 
 	onCreate() {}
@@ -78,6 +66,24 @@ class Scene {
 
 	onDestroy() {
 		this.#loader.destroy();
+	}
+
+	#initializeEntities() {
+		let entitiesLoaded = 0;
+		this.preload.entities.forEach((entity) => {
+			const { type: Type } = entity;
+			const entityObj = new Type({
+				name: entity.name,
+				...entity.args,
+			});
+			entityObj.loader.onComplete.add(() => {
+				entitiesLoaded += 1;
+				this.addEntity(entityObj);
+				if (entitiesLoaded === this.preload.entities.length && this.isCreated()) {
+					this.onStart();
+				}
+			});
+		});
 	}
 
 	isActive() {
