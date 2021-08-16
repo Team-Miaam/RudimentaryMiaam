@@ -53,16 +53,16 @@ class Scene {
 		this.#loader.onComplete.add(() => {
 			this.isCreated = true;
 		});
-		this.#initializeEntities();
+		this.#loadEntities();
 	}
 
 	onCreate() {}
 
 	onStart() {}
 
-	onUpdate(ticker) {
-		Object.entries(this.#entities).forEach((entity) => {
-			entity.onUpdate();
+	onUpdate(delta) {
+		Object.values(this.entities).forEach((entity) => {
+			entity.onUpdate(delta);
 		});
 	}
 
@@ -70,7 +70,7 @@ class Scene {
 		this.#loader.destroy();
 	}
 
-	#initializeEntities() {
+	#loadEntities() {
 		let entitiesLoaded = 0;
 		this.preload.entities.forEach((entity) => {
 			const { type: Type } = entity;

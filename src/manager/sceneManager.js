@@ -65,7 +65,9 @@ class SceneManager {
 		const scene = this.#scenes[sceneName];
 		if (!scene.isActive) {
 			scene.isActive = true;
-			// TODO: update the ticker
+			this.#gameManager.app.ticker.add((ticker) => {
+				scene.onUpdate(ticker);
+			});
 		}
 	}
 
