@@ -1,5 +1,5 @@
 import { Application } from 'pixi.js';
-import Keyboard from '../input/keyboard.js';
+import Keyboard from '../input/keyboard/keyboard.js';
 
 /**
  * Game manager
