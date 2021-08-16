@@ -9,8 +9,6 @@ class Entity {
 
 	preload;
 
-	#transform;
-
 	#sprite;
 
 	#loader;
@@ -19,11 +17,6 @@ class Entity {
 		this.#name = name;
 		this.preload = {
 			assets: [],
-		};
-		this.#transform = {
-			x: 0,
-			y: 0,
-			rotation: 0,
 		};
 		this.#active = false;
 		this.#created = false;
@@ -40,7 +33,7 @@ class Entity {
 
 	onStart() {}
 
-	onUpdate() {}
+	onUpdate(ticker) {}
 
 	onDestroy() {}
 
@@ -71,15 +64,17 @@ class Entity {
 	}
 
 	get transform() {
-		return this.#transform;
+		return {
+			x: this.sprite.x,
+			y: this.sprite.y,
+			rotation: this.sprite.rotation,
+		};
 	}
 
-	set transform({ x, y, rotation }) {
-		this.#transform.x = x;
-		this.#transform.y = y;
-		this.#transform.rotation = rotation;
-		this.#sprite.x = this.#transform.x;
-		this.#sprite.y = this.#transform.y;
+	set transform(transform) {
+		Object.entries(transform).forEach(([key, value]) => {
+			this.#sprite[key] = value;
+		});
 	}
 
 	get sprite() {

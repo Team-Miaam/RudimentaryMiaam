@@ -1,4 +1,5 @@
 import { Application } from 'pixi.js';
+import Keyboard from '../input/keyboard.js';
 
 /**
  * Game manager
@@ -34,6 +35,7 @@ class GameManager {
 		}
 		GameManager.#initialized = true;
 		GameManager.#instance = this;
+		Keyboard.bindEventListener(window);
 	}
 
 	/**

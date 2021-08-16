@@ -1,7 +1,7 @@
 {
 	"name": "miaam",
 	"version": "0.0.1",
-	"description": "ECS Framework by Miaam",
+	"description": "OOMiaam",
 	"main": "./dist/index.js",
 	"scripts": {
 		"format": "prettier --write .",
@@ -12,7 +12,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Team-Miaam/miaam-ecs.git"
+		"url": "git+https://github.com/Team-Miaam/RudimentaryMiaam.git"
 	},
 	"keywords": [
 		"Entity",
@@ -25,9 +25,9 @@
 	"author": "Team Miaam",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/Team-Miaam/miaam-ecs/issues"
+		"url": "https://github.com/Team-Miaam/RudimentaryMiaam/issues"
 	},
-	"homepage": "https://github.com/Team-Miaam/miaam-ecs#readme",
+	"homepage": "https://github.com/Team-Miaam/RudimentaryMiaam#readme",
 	"devDependencies": {
 		"@babel/core": "^7.14.0",
 		"@babel/eslint-parser": "^7.13.14",
