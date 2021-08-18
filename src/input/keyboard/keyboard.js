@@ -1,4 +1,4 @@
-import KeyboardKey from './keyboardKey.js';
+import Key from './Key.js';
 
 class Keyboard {
 	static #keys = {};
@@ -24,6 +24,8 @@ class Keyboard {
 		);
 	}
 
+	// FIXME: Buggy behaviour on multiple key presses at same time
+
 	static #onKeyUp(key) {
 		if (key.isDown) {
 			key.resolveActionsOnUp();
@@ -42,7 +44,7 @@ class Keyboard {
 
 	static #registerKeyIfUndefined(key) {
 		if (!this.#keys[key]) {
-			this.#keys[key] = new KeyboardKey(key);
+			this.#keys[key] = new Key(key);
 		}
 	}
 

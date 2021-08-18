@@ -1,4 +1,4 @@
-class KeyboardKey {
+class Key {
 	#value;
 
 	isUp;
@@ -39,4 +39,4 @@ class KeyboardKey {
 	}
 }
 
-export default KeyboardKey;
+export default Key;

@@ -102,5 +102,5 @@ typings/
 # TernJS port file
 .tern-port
 
-# Ignoring package-lock
-package-lock.json
+# ignoring dist
+dist
