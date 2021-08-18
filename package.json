@@ -5,7 +5,7 @@
 	"main": "./dist/index.js",
 	"scripts": {
 		"format": "prettier --write .",
-		"lint": "eslint . || exit 0",
+		"lint": "eslint .",
 		"build": "webpack",
 		"test": "mocha || exit 0",
 		"doc": "jsdoc src -r -d docs"
