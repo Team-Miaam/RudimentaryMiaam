@@ -45179,36 +45179,44 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _loader_loader_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loader/loader.js */ "./src/loader/loader.js");
 
 
+/**
+ *
+ */
 class Entity {
+	static loader;
+
+	static preload;
+
 	#name;
 
 	#active;
 
-	#created;
-
-	preload;
-
 	#sprite;
 
-	#loader;
-
-	constructor({ name }) {
-		this.#name = name;
-		this.preload = {
-			assets: [],
-		};
-		this.#active = false;
-		this.#created = false;
-		this.onCreate();
-		this.#loader = new _loader_loader_js__WEBPACK_IMPORTED_MODULE_0__.default();
-		this.#loader.loadAssets(this.preload.assets);
-		this.#loader.onComplete.add(() => {
-			this.onStart();
-			this.isCreated = true;
-		});
+	static Load() {
+		this.loader = new _loader_loader_js__WEBPACK_IMPORTED_MODULE_0__.default();
+		this.preload = this.preload
+			? this.preload
+			: {
+					assets: [],
+			  };
+		this.loader.loadAssets(this.preload.assets);
 	}
 
-	onCreate() {}
+	static get assets() {
+		return this.loader.loadedAssets;
+	}
+
+	static get loader() {
+		return this.loader;
+	}
+
+	constructor({ name }) {
+		// TODO: throw exception when entity is not loaded
+		this.#name = name;
+		this.#active = false;
+		this.onStart();
+	}
 
 	onStart() {}
 
@@ -45225,21 +45233,7 @@ class Entity {
 	}
 
 	set isActive(active) {
-		if (this.#created) {
-			this.#active = active;
-		}
-	}
-
-	get isCreated() {
-		return this.#created;
-	}
-
-	set isCreated(created) {
-		this.#created = created;
-	}
-
-	get assets() {
-		return this.#loader.loadedAssets;
+		this.#active = active;
 	}
 
 	get transform() {
@@ -45263,10 +45257,6 @@ class Entity {
 	set sprite(sprite) {
 		this.#sprite = sprite;
 	}
-
-	get loader() {
-		return this.#loader;
-	}
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Entity);
@@ -45286,66 +45276,50 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _loader_loader_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../loader/loader.js */ "./src/loader/loader.js");
-/* harmony import */ var _entity_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./entity.js */ "./src/core/entity.js");
-
 
 
 class Scene {
-	/**
-	 * @type {boolean}
-	 * whether the scene is active or not
-	 */
+	static loader;
+
+	static preload;
+
 	#active;
-
-	/**
-	 * @type {boolean}
-	 * scene is created with all resources loaded
-	 */
-	#created;
-
-	/**
-	 * @type {Object}
-	 * all the preloaded objects of the scene
-	 */
-	preload;
-
-	/**
-	 * @type {Array.<Entity>}
-	 * entities of the scene
-	 */
 
 	#entities;
 
-	/**
-	 * map of the scene;
-	 */
 	#map;
 
-	/**
-	 * @type {View}
-	 * View of the scene */
 	#view;
 
-	#loader;
+	static Load() {
+		this.preload = this.preload
+			? this.preload
+			: {
+					assets: [],
+					entities: [],
+			  };
+		this.loader = new _loader_loader_js__WEBPACK_IMPORTED_MODULE_0__.default();
+		this.loader.loadAssets(this.preload.assets);
+		this.loader.onComplete.add(() => {
+			this.preload.entities.forEach((Entity) => {
+				Entity.Load();
+			});
+		});
+	}
+
+	static get loader() {
+		return this.loader;
+	}
+
+	static get assets() {
+		return this.loader.loadedAssets;
+	}
 
 	constructor() {
 		this.#active = false;
-		this.#created = false;
-		this.preload = {
-			assets: [],
-			entities: [],
-		};
 		this.#entities = {};
-		this.onCreate();
-		this.#loader = new _loader_loader_js__WEBPACK_IMPORTED_MODULE_0__.default();
-		this.#loader.loadAssets(this.preload.assets);
-		this.#loader.onComplete.add(() => {
-			this.isCreated = true;
-		});
-		this.#loadEntities();
+		this.onStart();
 	}
-
-	onCreate() {}
 
 	onStart() {}
 
@@ -45356,25 +45330,7 @@ class Scene {
 	}
 
 	onDestroy() {
-		this.#loader.destroy();
-	}
-
-	#loadEntities() {
-		let entitiesLoaded = 0;
-		this.preload.entities.forEach((entity) => {
-			const { type: Type } = entity;
-			const entityObj = new Type({
-				name: entity.name,
-				...entity.args,
-			});
-			entityObj.loader.onComplete.add(() => {
-				entitiesLoaded += 1;
-				this.addEntity(entityObj);
-				if (entitiesLoaded === this.preload.entities.length && this.isCreated) {
-					this.onStart();
-				}
-			});
-		});
+		this.loader.destroy();
 	}
 
 	get isActive() {
@@ -45382,21 +45338,7 @@ class Scene {
 	}
 
 	set isActive(active) {
-		if (this.isCreated) {
-			this.#active = active;
-		}
-	}
-
-	get isCreated() {
-		return this.#created;
-	}
-
-	set isCreated(created) {
-		this.#created = created;
-	}
-
-	get assets() {
-		return this.#loader.loadedAssets;
+		this.#active = active;
 	}
 
 	addEntity(entity) {
@@ -45426,10 +45368,6 @@ class Scene {
 
 	get view() {
 		return this.#view;
-	}
-
-	get loader() {
-		return this.#loader;
 	}
 }
 
@@ -46051,6 +45989,75 @@ class SceneManager {
 
 /***/ }),
 
+/***/ "./src/ui/dialogue.js":
+/*!****************************!*\
+  !*** ./src/ui/dialogue.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/dist/esm/pixi.js");
+/* harmony import */ var _manager_gameManager__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../manager/gameManager */ "./src/manager/gameManager.js");
+/* harmony import */ var _input_keyboard_keyboard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../input/keyboard/keyboard */ "./src/input/keyboard/keyboard.js");
+
+
+
+
+class Dialogue {
+	queue = [];
+
+	hasBoxCreated = false;
+
+	dialogues = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text('');
+
+	whiteBox = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+
+	app = _manager_gameManager__WEBPACK_IMPORTED_MODULE_1__.default.instance.app;
+
+	constructor(queue) {
+		this.queue = queue;
+		this.initiateDialogues();
+		this.initiateWhiteBox();
+		this.app.stage.addChild(this.whiteBox);
+		this.app.stage.addChild(this.dialogues);
+	}
+
+	initiateWhiteBox() {
+		this.whiteBox.lineStyle(10, 0x000000, 5);
+		this.whiteBox.beginFill(0xffffff);
+		this.whiteBox.drawRect(5, 402, 502, 105);
+		this.whiteBox.endFill();
+	}
+
+	initiateDialogues() {
+		this.dialogues.x = 10;
+		this.dialogues.y = 402;
+		this.queue.push(' ');
+		this.nextText();
+	}
+
+	nextText() {
+		if (this.whiteBox === undefined) {
+			return;
+		}
+		if (this.queue.length > 1) {
+			this.dialogues.text = this.queue.shift();
+		} else {
+			this.whiteBox.destroy();
+			this.dialogues.destroy();
+			this.whiteBox = undefined;
+		}
+	}
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Dialogue);
+
+
+/***/ }),
+
 /***/ "./src/util/path.js":
 /*!**************************!*\
   !*** ./src/util/path.js ***!
@@ -46203,8 +46210,8 @@ class ObjectGroup extends _layer_js__WEBPACK_IMPORTED_MODULE_0__.default {
 	constructSprite() {
 		const { entities } = this.scene;
 		const { objects } = this.layer;
-		objects.forEach((object) => {
-			const entity = entities[object.name];
+		entities.forEach((entity) => {
+			const object = objects[entity.name];
 			entity.transform = {
 				x: object.x,
 				y: object.y,
@@ -46436,23 +46443,29 @@ var __webpack_exports__ = {};
   \******************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "GameManager": () => (/* reexport safe */ _src_manager_gameManager_js__WEBPACK_IMPORTED_MODULE_0__.default),
-/* harmony export */   "SceneManager": () => (/* reexport safe */ _src_manager_sceneManager_js__WEBPACK_IMPORTED_MODULE_1__.default),
-/* harmony export */   "Scene": () => (/* reexport safe */ _src_core_scene_js__WEBPACK_IMPORTED_MODULE_2__.default),
-/* harmony export */   "View": () => (/* reexport safe */ _src_view_view_js__WEBPACK_IMPORTED_MODULE_4__.default),
-/* harmony export */   "Entity": () => (/* reexport safe */ _src_core_entity_js__WEBPACK_IMPORTED_MODULE_3__.default),
-/* harmony export */   "AnimatedSpriteWState": () => (/* reexport safe */ _src_core_animation_js__WEBPACK_IMPORTED_MODULE_5__.default),
-/* harmony export */   "Camera": () => (/* reexport safe */ _src_core_camera_js__WEBPACK_IMPORTED_MODULE_6__.default),
-/* harmony export */   "Keyboard": () => (/* reexport safe */ _src_input_keyboard_keyboard_js__WEBPACK_IMPORTED_MODULE_7__.default)
+/* harmony export */   "GameManager": () => (/* reexport safe */ _src_manager_gameManager_js__WEBPACK_IMPORTED_MODULE_1__.default),
+/* harmony export */   "SceneManager": () => (/* reexport safe */ _src_manager_sceneManager_js__WEBPACK_IMPORTED_MODULE_2__.default),
+/* harmony export */   "Scene": () => (/* reexport safe */ _src_core_scene_js__WEBPACK_IMPORTED_MODULE_3__.default),
+/* harmony export */   "View": () => (/* reexport safe */ _src_view_view_js__WEBPACK_IMPORTED_MODULE_5__.default),
+/* harmony export */   "Entity": () => (/* reexport safe */ _src_core_entity_js__WEBPACK_IMPORTED_MODULE_4__.default),
+/* harmony export */   "AnimatedSpriteWState": () => (/* reexport safe */ _src_core_animation_js__WEBPACK_IMPORTED_MODULE_6__.default),
+/* harmony export */   "Camera": () => (/* reexport safe */ _src_core_camera_js__WEBPACK_IMPORTED_MODULE_7__.default),
+/* harmony export */   "Keyboard": () => (/* reexport safe */ _src_input_keyboard_keyboard_js__WEBPACK_IMPORTED_MODULE_8__.default),
+/* harmony export */   "Sprite": () => (/* reexport safe */ pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite),
+/* harmony export */   "Dialogue": () => (/* reexport safe */ _src_ui_dialogue_js__WEBPACK_IMPORTED_MODULE_9__.default)
 /* harmony export */ });
-/* harmony import */ var _src_manager_gameManager_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/manager/gameManager.js */ "./src/manager/gameManager.js");
-/* harmony import */ var _src_manager_sceneManager_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/manager/sceneManager.js */ "./src/manager/sceneManager.js");
-/* harmony import */ var _src_core_scene_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./src/core/scene.js */ "./src/core/scene.js");
-/* harmony import */ var _src_core_entity_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./src/core/entity.js */ "./src/core/entity.js");
-/* harmony import */ var _src_view_view_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./src/view/view.js */ "./src/view/view.js");
-/* harmony import */ var _src_core_animation_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./src/core/animation.js */ "./src/core/animation.js");
-/* harmony import */ var _src_core_camera_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./src/core/camera.js */ "./src/core/camera.js");
-/* harmony import */ var _src_input_keyboard_keyboard_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./src/input/keyboard/keyboard.js */ "./src/input/keyboard/keyboard.js");
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/dist/esm/pixi.js");
+/* harmony import */ var _src_manager_gameManager_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/manager/gameManager.js */ "./src/manager/gameManager.js");
+/* harmony import */ var _src_manager_sceneManager_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./src/manager/sceneManager.js */ "./src/manager/sceneManager.js");
+/* harmony import */ var _src_core_scene_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./src/core/scene.js */ "./src/core/scene.js");
+/* harmony import */ var _src_core_entity_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./src/core/entity.js */ "./src/core/entity.js");
+/* harmony import */ var _src_view_view_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./src/view/view.js */ "./src/view/view.js");
+/* harmony import */ var _src_core_animation_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./src/core/animation.js */ "./src/core/animation.js");
+/* harmony import */ var _src_core_camera_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./src/core/camera.js */ "./src/core/camera.js");
+/* harmony import */ var _src_input_keyboard_keyboard_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./src/input/keyboard/keyboard.js */ "./src/input/keyboard/keyboard.js");
+/* harmony import */ var _src_ui_dialogue_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./src/ui/dialogue.js */ "./src/ui/dialogue.js");
+
+
 
 
 
