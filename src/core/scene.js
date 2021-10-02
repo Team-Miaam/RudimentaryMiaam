@@ -1,62 +1,47 @@
 import Loader from '../loader/loader.js';
-import Entity from './entity.js';
 
 class Scene {
-	/**
-	 * @type {boolean}
-	 * whether the scene is active or not
-	 */
+	static loader;
+
+	static preload;
+
 	#active;
-
-	/**
-	 * @type {boolean}
-	 * scene is created with all resources loaded
-	 */
-	#created;
-
-	/**
-	 * @type {Object}
-	 * all the preloaded objects of the scene
-	 */
-	preload;
-
-	/**
-	 * @type {Array.<Entity>}
-	 * entities of the scene
-	 */
 
 	#entities;
 
-	/**
-	 * map of the scene;
-	 */
 	#map;
 
-	/**
-	 * @type {View}
-	 * View of the scene */
 	#view;
 
-	#loader;
+	static Load() {
+		this.preload = this.preload
+			? this.preload
+			: {
+					assets: [],
+					entities: [],
+			  };
+		this.loader = new Loader();
+		this.loader.loadAssets(this.preload.assets);
+		this.loader.onComplete.add(() => {
+			this.preload.entities.forEach((Entity) => {
+				Entity.Load();
+			});
+		});
+	}
+
+	static get loader() {
+		return this.loader;
+	}
+
+	static get assets() {
+		return this.loader.loadedAssets;
+	}
 
 	constructor() {
 		this.#active = false;
-		this.#created = false;
-		this.preload = {
-			assets: [],
-			entities: [],
-		};
 		this.#entities = {};
-		this.onCreate();
-		this.#loader = new Loader();
-		this.#loader.loadAssets(this.preload.assets);
-		this.#loader.onComplete.add(() => {
-			this.isCreated = true;
-		});
-		this.#loadEntities();
+		this.onStart();
 	}
-
-	onCreate() {}
 
 	onStart() {}
 
@@ -67,25 +52,7 @@ class Scene {
 	}
 
 	onDestroy() {
-		this.#loader.destroy();
-	}
-
-	#loadEntities() {
-		let entitiesLoaded = 0;
-		this.preload.entities.forEach((entity) => {
-			const { type: Type } = entity;
-			const entityObj = new Type({
-				name: entity.name,
-				...entity.args,
-			});
-			entityObj.loader.onComplete.add(() => {
-				entitiesLoaded += 1;
-				this.addEntity(entityObj);
-				if (entitiesLoaded === this.preload.entities.length && this.isCreated) {
-					this.onStart();
-				}
-			});
-		});
+		this.loader.destroy();
 	}
 
 	get isActive() {
@@ -93,21 +60,7 @@ class Scene {
 	}
 
 	set isActive(active) {
-		if (this.isCreated) {
-			this.#active = active;
-		}
-	}
-
-	get isCreated() {
-		return this.#created;
-	}
-
-	set isCreated(created) {
-		this.#created = created;
-	}
-
-	get assets() {
-		return this.#loader.loadedAssets;
+		this.#active = active;
 	}
 
 	addEntity(entity) {
@@ -137,10 +90,6 @@ class Scene {
 
 	get view() {
 		return this.#view;
-	}
-
-	get loader() {
-		return this.#loader;
 	}
 }
 
