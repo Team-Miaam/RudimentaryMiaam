@@ -4,13 +4,15 @@ class ObjectGroup extends Layer {
 	constructSprite() {
 		const { entities } = this.scene;
 		const { objects } = this.layer;
-		entities.forEach((entity) => {
-			const object = objects[entity.name];
+		objects.forEach((object) => {
+			const entity = entities[object.name];
 			entity.transform = {
 				x: object.x,
 				y: object.y,
 				rotation: object.rotation,
 			};
+		});
+		Object.values(entities).forEach((entity) => {
 			this.addChild(entity.sprite);
 		});
 	}
