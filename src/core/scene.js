@@ -13,22 +13,6 @@ class Scene {
 
 	#view;
 
-	static Load() {
-		this.preload = this.preload
-			? this.preload
-			: {
-					assets: [],
-					entities: [],
-			  };
-		this.loader = new Loader();
-		this.loader.loadAssets(this.preload.assets);
-		this.loader.onComplete.add(() => {
-			this.preload.entities.forEach((Entity) => {
-				Entity.Load();
-			});
-		});
-	}
-
 	static get loader() {
 		return this.loader;
 	}
@@ -40,7 +24,31 @@ class Scene {
 	constructor() {
 		this.#active = false;
 		this.#entities = {};
-		this.onStart();
+		this.constructor.preload = this.constructor.preload
+			? this.constructor.preload
+			: {
+					assets: [],
+					entities: [],
+			  };
+		const { preload } = this.constructor;
+		this.constructor.loader = new Loader();
+		this.constructor.loader.loadAssets(preload.assets);
+		this.constructor.loader.onComplete.add(() => {
+			this.loadEntities(preload);
+		});
+	}
+
+	loadEntities(preload) {
+		let entitiesLoaded = 0;
+		preload.entities.forEach((Entity) => {
+			Entity.Load();
+			Entity.loader.onComplete.add(() => {
+				entitiesLoaded += 1;
+				if (entitiesLoaded === preload.entities.length) {
+					this.onStart();
+				}
+			});
+		});
 	}
 
 	onStart() {}
