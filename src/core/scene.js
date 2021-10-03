@@ -1,4 +1,5 @@
 import Loader from '../loader/loader.js';
+import View from '../view/view.js';
 
 class Scene {
 	static loader;
@@ -71,8 +72,9 @@ class Scene {
 		this.#active = active;
 	}
 
-	addEntity(entity) {
+	addEntity({ layer, entity }) {
 		this.#entities[entity.name] = entity;
+		this.view.addObjectToLayer({ layer, object: entity });
 	}
 
 	removeEntity(entity) {
@@ -86,6 +88,7 @@ class Scene {
 
 	set map(map) {
 		this.#map = map;
+		this.view = new View(this.map);
 	}
 
 	get map() {

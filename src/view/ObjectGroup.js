@@ -2,19 +2,13 @@ import Layer from './layer.js';
 
 class ObjectGroup extends Layer {
 	constructSprite() {
-		const { entities } = this.scene;
-		const { objects } = this.layer;
-		objects.forEach((object) => {
-			const entity = entities[object.name];
-			entity.transform = {
-				x: object.x,
-				y: object.y,
-				rotation: object.rotation,
-			};
+		const { objects: objectsArray } = this.mapLayerData;
+		const objectsMap = {};
+		objectsArray.forEach((object) => {
+			objectsMap[object.name] = object;
 		});
-		Object.values(entities).forEach((entity) => {
-			this.addChild(entity.sprite);
-		});
+
+		this.mapLayerData.objects = objectsMap;
 	}
 }
 
