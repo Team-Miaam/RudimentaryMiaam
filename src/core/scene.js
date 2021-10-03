@@ -22,6 +22,9 @@ class Scene {
 		return this.loader.loadedAssets;
 	}
 
+	/**
+	 * Calls onCreate function,then all the assets are being preloaded, and load the entities.
+	 *//**/ 
 	constructor() {
 		this.#active = false;
 		this.#entities = {};
