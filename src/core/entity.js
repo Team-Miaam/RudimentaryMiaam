@@ -1,35 +1,43 @@
 import Loader from '../loader/loader.js';
 
+/**
+ *
+ */
 class Entity {
+	static loader;
+
+	static preload;
+
 	#name;
 
 	#active;
 
-	#created;
-
-	preload;
-
 	#sprite;
 
-	#loader;
-
-	constructor({ name }) {
-		this.#name = name;
-		this.preload = {
-			assets: [],
-		};
-		this.#active = false;
-		this.#created = false;
-		this.onCreate();
-		this.#loader = new Loader();
-		this.#loader.loadAssets(this.preload.assets);
-		this.#loader.onComplete.add(() => {
-			this.onStart();
-			this.isCreated = true;
-		});
+	static Load() {
+		this.loader = new Loader();
+		this.preload = this.preload
+			? this.preload
+			: {
+					assets: [],
+			  };
+		this.loader.loadAssets(this.preload.assets);
 	}
 
-	onCreate() {}
+	static get assets() {
+		return this.loader.loadedAssets;
+	}
+
+	static get loader() {
+		return this.loader;
+	}
+
+	constructor({ name }) {
+		// TODO: throw exception when entity is not loaded
+		this.#name = name;
+		this.#active = false;
+		this.onStart();
+	}
 
 	onStart() {}
 
@@ -46,21 +54,7 @@ class Entity {
 	}
 
 	set isActive(active) {
-		if (this.#created) {
-			this.#active = active;
-		}
-	}
-
-	get isCreated() {
-		return this.#created;
-	}
-
-	set isCreated(created) {
-		this.#created = created;
-	}
-
-	get assets() {
-		return this.#loader.loadedAssets;
+		this.#active = active;
 	}
 
 	get transform() {
@@ -83,10 +77,6 @@ class Entity {
 
 	set sprite(sprite) {
 		this.#sprite = sprite;
-	}
-
-	get loader() {
-		return this.#loader;
 	}
 }
 

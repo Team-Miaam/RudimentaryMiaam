@@ -102,5 +102,8 @@ typings/
 # TernJS port file
 .tern-port
 
-# ignoring documentation folder
-docs
+# ingoring distribution
+dist
+
+# Ignoring package-lock
+package-lock.json

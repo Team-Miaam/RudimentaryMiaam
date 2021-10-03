@@ -1,65 +1,59 @@
 import Loader from '../loader/loader.js';
-import Entity from './entity.js';
+import View from '../view/view.js';
 
 class Scene {
-	/**
-	 * @type {boolean}
-	 * whether the scene is active or not
-	 */
+	static loader;
+
+	static preload;
+
 	#active;
-
-	/**
-	 * @type {boolean}
-	 * scene is created with all resources loaded
-	 */
-	#created;
-
-	/**
-	 * @type {Object}
-	 * all the preloaded objects of the scene
-	 */
-	preload;
-
-	/**
-	 * @type {Array.<Entity>}
-	 * entities of the scene
-	 */
 
 	#entities;
 
-	/**
-	 * map of the scene;
-	 */
 	#map;
 
-	/**
-	 * @type {View}
-	 * View of the scene */
 	#view;
 
-	#loader;
+	static get loader() {
+		return this.loader;
+	}
+
+	static get assets() {
+		return this.loader.loadedAssets;
+	}
 
 	/**
 	 * Calls onCreate function,then all the assets are being preloaded, and load the entities.
 	 *//**/ 
 	constructor() {
 		this.#active = false;
-		this.#created = false;
-		this.preload = {
-			assets: [],
-			entities: [],
-		};
 		this.#entities = {};
-		this.onCreate();
-		this.#loader = new Loader();
-		this.#loader.loadAssets(this.preload.assets);
-		this.#loader.onComplete.add(() => {
-			this.isCreated = true;
+		this.constructor.preload = this.constructor.preload
+			? this.constructor.preload
+			: {
+					assets: [],
+					entities: [],
+			  };
+		const { preload } = this.constructor;
+		this.constructor.loader = new Loader();
+		this.constructor.loader.loadAssets(preload.assets);
+		this.constructor.loader.onComplete.add(() => {
+			this.loadEntities(preload);
 		});
-		this.#loadEntities();
 	}
 
-	onCreate() {}
+	loadEntities(preload) {
+		let entitiesLoaded = 0;
+		preload.entities.forEach((Entity) => {
+			Entity.Load();
+			Entity.loader.onComplete.add(() => {
+				entitiesLoaded += 1;
+				if (entitiesLoaded === preload.entities.length) {
+					this.onStart();
+				}
+			});
+		});
+	}
 
 	onStart() {}
 
@@ -70,25 +64,7 @@ class Scene {
 	}
 
 	onDestroy() {
-		this.#loader.destroy();
-	}
-
-	#loadEntities() {
-		let entitiesLoaded = 0;
-		this.preload.entities.forEach((entity) => {
-			const { type: Type } = entity;
-			const entityObj = new Type({
-				name: entity.name,
-				...entity.args,
-			});
-			entityObj.loader.onComplete.add(() => {
-				entitiesLoaded += 1;
-				this.addEntity(entityObj);
-				if (entitiesLoaded === this.preload.entities.length && this.isCreated) {
-					this.onStart();
-				}
-			});
-		});
+		this.loader.destroy();
 	}
 
 	get isActive() {
@@ -96,25 +72,12 @@ class Scene {
 	}
 
 	set isActive(active) {
-		if (this.isCreated) {
-			this.#active = active;
-		}
+		this.#active = active;
 	}
 
-	get isCreated() {
-		return this.#created;
-	}
-
-	set isCreated(created) {
-		this.#created = created;
-	}
-
-	get assets() {
-		return this.#loader.loadedAssets;
-	}
-
-	addEntity(entity) {
+	addEntity({ layer, entity }) {
 		this.#entities[entity.name] = entity;
+		this.view.addObjectToLayer({ layer, object: entity });
 	}
 
 	removeEntity(entity) {
@@ -128,6 +91,7 @@ class Scene {
 
 	set map(map) {
 		this.#map = map;
+		this.view = new View(this.map);
 	}
 
 	get map() {
@@ -140,10 +104,6 @@ class Scene {
 
 	get view() {
 		return this.#view;
-	}
-
-	get loader() {
-		return this.#loader;
 	}
 }
 
