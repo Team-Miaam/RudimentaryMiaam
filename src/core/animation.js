@@ -9,8 +9,11 @@ class AnimatedSpriteWState extends AnimatedSprite {
 		super([Texture.EMPTY]);
 		this.#states = {};
 		animationMap.data.tilesets.forEach((tileset) => {
-			tileset.data = animationMap.tilesets[tileset.name].data;
-			tileset.data.image = animationMap.tilesets[tileset.name].images[getFileNameWithoutExtension(tileset.data.image)];
+			if (tileset.data === undefined) {
+				tileset.data = animationMap.tilesets[tileset.name].data;
+				tileset.data.image =
+					animationMap.tilesets[tileset.name].images[getFileNameWithoutExtension(tileset.data.image)];
+			}
 		});
 		this.#createTextures(animationMap.data);
 		this.state = animationMap.data.layers[0].name;
