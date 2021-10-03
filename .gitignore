@@ -104,3 +104,6 @@ typings/
 
 # ingoring distribution
 dist
+
+# Ignoring package-lock
+package-lock.json
