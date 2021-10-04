@@ -3,15 +3,18 @@ import { getFileNameWithoutExtension } from '../util/path.js';
 import layerTypeRendererRegistry from './layerType.js';
 
 /**
+ * A container which holds all the {@link Layer}
+ * 
  * @class
  * @public
- * A container which holds all the {@link Layer}
+ * 
  */
 class View extends Container {
 	/**
+	 * array of layers from map 
+	 * 
 	 * @private
 	 * @type {Object}
-	 * array of layers from map 
 	 */
 	#layers;
 	/**
@@ -32,9 +35,10 @@ class View extends Container {
 		this.#renderLayers(map.data);
 	}
 	/**
+	 * Creates sprites from textures based on the class type of layer and add them to the view 
+	 * 
 	 * @private
 	 * @param {Object} map - Holds all the data of a tiled game-world/texture map
-	 * Creates sprites from textures based on the class type of layer and add them to the view 
 	 */
 	#renderLayers(map) {
 		Object.values(this.#layers).forEach((layer) => {
