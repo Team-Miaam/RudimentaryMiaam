@@ -1,17 +1,15 @@
 # This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Release
+name: Build
 
 on:
-  push:
+  pull_request:
     branches: [master]
-    tags:
-      - "v*"
 
 jobs:
-  release:
-    name: Release
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,9 +17,7 @@ jobs:
         node-version: [14.x]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
@@ -29,12 +25,3 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build 
-
-      - name: GH Release
-        uses: softprops/action-gh-release@v1
-        with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: |
-            ./dist/index.js
-            ./dist/index.js.map
