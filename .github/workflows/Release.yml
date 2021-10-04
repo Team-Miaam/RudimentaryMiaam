@@ -30,10 +30,10 @@ jobs:
       - run: npm ci
       - run: npm run build 
 
-      - name: GH Release
-        uses: softprops/action-gh-release@v1
+      - name: Automatic Release
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           files: |
             ./dist/index.js
