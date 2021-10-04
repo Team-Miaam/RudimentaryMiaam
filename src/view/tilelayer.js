@@ -13,8 +13,6 @@ class TileLayer extends Layer {
 	/**
 	 * takes data from the map and creates sprites, tile-wise 
 	 * @public
-	 * @constructor
-	 * 
 	 * @param {Object} map - Holds all the data of a tiled game-world/texture map
 	 */
 	constructSprite(map) {

@@ -15,10 +15,10 @@ class Layer extends Container {
 	 */
 	mapLayerData;
 	/**
-	 * @constructor
 	 * creates layer.
 	 * @param {Object} layer - represents the data of a layer from the given map in json format.
 	 * 
+	 * @constructor
 	 */
 	constructor({ layer }) {
 		super();
