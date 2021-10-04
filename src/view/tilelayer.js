@@ -2,7 +2,21 @@ import { Sprite } from 'pixi.js';
 import { snip } from '../util/spritesheet.js';
 import Layer from './layer.js';
 
+/**
+ * @class
+ * @public 
+ * This class Extends {@link Layer} 
+ * TileLayer creates sprites from textures
+ * 
+ */
 class TileLayer extends Layer {
+	/**
+	 * @public
+	 * @constructor
+	 * 
+	 * takes data from the map and creates sprites, tile-wise 
+	 * @param {Object} map - Holds all the data of a game-world map
+	 */
 	constructSprite(map) {
 		const tileset = map.tilesets[0].data;
 		const spritesheet = tileset.image.texture;
