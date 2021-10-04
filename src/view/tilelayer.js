@@ -3,18 +3,16 @@ import { snip } from '../util/spritesheet.js';
 import Layer from './layer.js';
 
 /**
- * @class
- * @public 
  * This class Extends {@link Layer} 
  * TileLayer creates sprites from textures
+ * @class
+ * @public 
  * 
  */
 class TileLayer extends Layer {
 	/**
-	 * @public
-	 * @constructor
-	 * 
 	 * takes data from the map and creates sprites, tile-wise 
+	 * @public
 	 * @param {Object} map - Holds all the data of a tiled game-world/texture map
 	 */
 	constructSprite(map) {

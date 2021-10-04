@@ -6,12 +6,15 @@ import Key from './Key.js';
 class Keyboard {
 	/**
 	 * List of the all the key used in current running game.
+	 * @static
 	 * @type {Object}
 	 */
 	static #keys = {};
 
 	/**
 	 * Checks whether input key is already in Key object,if not bind keyboard with that event window.
+	 * @public
+	 * @static
 	 * @param {Object} object 
 	 */
 	static bindEventListener(object) {
@@ -37,7 +40,8 @@ class Keyboard {
 
 	// FIXME: Buggy behaviour on multiple key presses at same time
 	/**
-	 * 
+	 * @private
+	 * @static
 	 * @param {String} key - checks if key is pressed when key is released.
 	 */
 	static #onKeyUp(key) {
@@ -48,7 +52,8 @@ class Keyboard {
 		key.isUp = true;
 	}
 	/**
-	 * 
+	 * @private
+	 * @static
 	 * @param {String} key - checks if key is pressed when key is pressed.
 	 */
 	static #onKeyDown(key) {
@@ -60,7 +65,8 @@ class Keyboard {
 	}
 	
 	/**
-	 * 
+	 * @private
+	 * @static
 	 * @param {String} key - checks and register if key is pressed when key is undefined.
 	 */
 	static #registerKeyIfUndefined(key) {
@@ -69,7 +75,7 @@ class Keyboard {
 		}
 	}
 	/**
-	 * 
+	 * @static
 	 * @param {String} key - checks and register if key is pressed when pre-declared key is undefined.
 	 * @returns {Key} Instance of key class.
 	 */

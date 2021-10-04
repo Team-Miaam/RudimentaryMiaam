@@ -1,31 +1,33 @@
 import { Container } from 'pixi.js';
 
 /**
+ * this class represents a Container. Layer contains array of textures.
+ * 
  * @class
  * @public
- * this class represents a Container
- * Layer contains array of textures
  */
 class Layer extends Container {
 	/**
+	 * stores data of a layer from the given map in json format.
+	 * 
 	 * @public
 	 * @type {Object}
-	 * stores data of a layer from the given map in json format
 	 */
 	mapLayerData;
 	/**
-	 * @constructor
-	 * creates layer
-	 * @param {Object} layer - represents the data of a layer from the given map in json format
+	 * creates layer.
+	 * @param {Object} layer - represents the data of a layer from the given map in json format.
 	 * 
+	 * @constructor
 	 */
 	constructor({ layer }) {
 		super();
 		this.mapLayerData = layer;
 	}
 	/**
+	 * creates sprites from data.
+	 * 
 	 * @abstract
-	 * creates sprites from data
 	 */
 	constructSprite() { }
 }
