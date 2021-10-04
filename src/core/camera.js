@@ -1,4 +1,8 @@
+/**Class representing game camera */
 class Camera {
+	/**
+	 * 
+	 */
 	#view;
 
 	#width;
