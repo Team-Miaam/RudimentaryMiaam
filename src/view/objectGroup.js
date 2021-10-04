@@ -1,5 +1,11 @@
 import Layer from './layer.js';
 
+/**
+ * @class
+ * @public
+ * this class extends {@link Layer}
+ * ObjectGroup creates sprites from objects in map
+ */
 class ObjectGroup extends Layer {
 	constructSprite() {
 		const { objects: objectsArray } = this.mapLayerData;

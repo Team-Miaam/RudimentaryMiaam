@@ -1,6 +1,10 @@
 import ObjectGroup from './objectGroup.js';
 import TileLayer from './tilelayer.js';
-
+/**
+ * Enum for layer types
+ * @enum
+ * @readonly
+ */
 const layerTypeRendererRegistry = {
 	tilelayer: TileLayer,
 	objectgroup: ObjectGroup,
