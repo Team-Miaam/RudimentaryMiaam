@@ -15,7 +15,7 @@ class TileLayer extends Layer {
 	 * @constructor
 	 * 
 	 * takes data from the map and creates sprites, tile-wise 
-	 * @param {Object} map - Holds all the data of a game-world map
+	 * @param {Object} map - Holds all the data of a tiled game-world/texture map
 	 */
 	constructSprite(map) {
 		const tileset = map.tilesets[0].data;
