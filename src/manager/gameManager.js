@@ -2,30 +2,31 @@ import { Application } from 'pixi.js';
 import Keyboard from '../input/keyboard/keyboard.js';
 
 /**
- * Game manager
+ * Game managers manages the application window.
  * @public
  * @class
  */
 class GameManager {
 	/**
-	 * singleton instance
+	 * singleton instance.
 	 * @type {GameManager}
 	 */
 	static #instance;
 
 	/**
-	 * keeping track of singleton instance
+	 * keeping track of singleton instance.
 	 * @type {boolean}
 	 */
 	static #initialized = false;
 
 	/**
-	 * Application with renderer, ticker and root container
+	 * Application with renderer, ticker and root container.
 	 * @type {Application}
 	 */
 	#app;
 
 	/**
+	 * Initiate a singleton instance of game manager.
 	 * @private
 	 * @constructor
 	 */
@@ -39,6 +40,7 @@ class GameManager {
 	}
 
 	/**
+	 * Returns the singleton instance of game manager.
 	 * @returns {GameManager}
 	 */
 	static get instance() {
@@ -50,7 +52,6 @@ class GameManager {
 
 	/**
 	 * creates the game window using given options
-	 * TODO: Add documentation for various options
 	 * @param {Object} options
 	 */
 	createWindow(options) {
@@ -58,13 +59,17 @@ class GameManager {
 	}
 
 	/**
-	 *
+	 * Returns the application associated with this game.
 	 * @returns {Application} the main application
 	 */
 	get app() {
 		return this.#app;
 	}
 
+	/**
+	 * Returns the view of the window.
+	 * @returns {View}
+	 */
 	get window() {
 		return this.#app.view;
 	}
