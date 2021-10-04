@@ -7,7 +7,7 @@ class AnimatedSpriteWState extends AnimatedSprite {
 
 	constructor(animationMap) {
 		super([Texture.EMPTY]);
-		this.#states = {};
+		this.#states = { normal: {} };
 		animationMap.data.tilesets.forEach((tileset) => {
 			if (tileset.data === undefined) {
 				tileset.data = animationMap.tilesets[tileset.name].data;
@@ -15,17 +15,17 @@ class AnimatedSpriteWState extends AnimatedSprite {
 					animationMap.tilesets[tileset.name].images[getFileNameWithoutExtension(tileset.data.image)];
 			}
 		});
-		this.#createTextures(animationMap.data);
-		this.state = animationMap.data.layers[0].name;
+		this.#createNormalTextures(animationMap.data);
+		this.state = { state: animationMap.data.layers[0].name };
 	}
 
-	#createTextures(animationMap) {
+	#createNormalTextures(animationMap) {
 		const states = animationMap.layers;
 		const tileset = animationMap.tilesets[0].data;
 		const spritesheet = tileset.image.texture;
 
 		states.forEach((state) => {
-			this.#states[state.name] = [];
+			this.#states.normal[state.name] = [];
 			state.data.forEach((gid) => {
 				if (gid === 0) {
 					return;
@@ -45,17 +45,42 @@ class AnimatedSpriteWState extends AnimatedSprite {
 				}
 
 				const texture = snip(spritesheet, tilesetX, tilesetY, animationMap.tilewidth, animationMap.tileheight);
-				this.#states[state.name].push(texture);
+				this.#states.normal[state.name].push(texture);
 			});
 		});
 	}
 
-	set state(state) {
-		this.textures = this.#states[state];
-		this.anchor.set(0.5);
-		this.animationSpeed = 0.1;
+	createRotatedTextures({ rotationName, rotationGroup }) {
+		this.#states[rotationName] = {};
+		const rotatedTextures = this.#states[rotationName];
+		Object.keys(this.#states.normal).forEach((state) => {
+			rotatedTextures[state] = [];
+			const textures = this.#states.normal[state];
+			textures.forEach((texture, i) => {
+				rotatedTextures[state].push(texture.clone());
+				rotatedTextures[state][i].rotate = rotationGroup;
+			});
+		});
+	}
+
+	set state({ state, rotationName = 'normal', speed = 0.1, anchor = 0.5, loop = -1, angle = 0 }) {
+		this.textures = this.#states[rotationName][state];
+		this.anchor.set(anchor);
+		this.animationSpeed = speed;
 		this.loop = true;
-		this.play();
+		this.loopCount = loop;
+		this.angle = angle;
+		if (loop > 0) {
+			this.onLoop = () => {
+				if (this.loopCount === 0) {
+					this.stop();
+				}
+				this.loopCount -= 1;
+			};
+		}
+		if (loop !== 0) {
+			this.play();
+		}
 	}
 }
 
