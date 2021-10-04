@@ -71,7 +71,7 @@ class Keyboard {
 	/**
 	 * 
 	 * @param {String} key - checks and register if key is pressed when pre-declared key is undefined.
-	 * @returns 
+	 * @returns {Key} Instance of key class.
 	 */
 	static key(key) {
 		this.#registerKeyIfUndefined(key);
