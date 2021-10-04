@@ -1,12 +1,12 @@
 import Key from './Key.js';
 /**
- * @class 
  * Connect between event window and keyboard inputs. 
+ * @class 
  */
 class Keyboard {
 	/**
-	 * @type {Object}
 	 * List of the all the key used in current running game.
+	 * @type {Object}
 	 */
 	static #keys = {};
 

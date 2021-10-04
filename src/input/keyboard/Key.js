@@ -1,7 +1,7 @@
 /**
+ * Manages key pressed or not and assign and execute associate action.
  * @public
  * @class
- * Manages key pressed or not and assign and execute associate action.
  */
 class Key {
 	/**
@@ -10,26 +10,26 @@ class Key {
 	#value;
 
 	/**
-	 * @type {Boolean}
 	 * True if the key isn't pressed.
+	 * @type {Boolean}
 	 */
 	isUp;
 
 	/**
-	 * @type {Boolean}
 	 * True if the key is pressed.
+	 * @type {Boolean}
 	 */
 	isDown;
 
 	/**
-	 * @type {Object}
 	 * The actions if key isn't pressed.
+	 * @type {Object}
 	 */
 	#onUpActions;
 
 	/**
-	 * @type {Object}
 	 * The actions if key is pressed.
+	 * @type {Object}
 	 */
 	#onDownActions;
 
