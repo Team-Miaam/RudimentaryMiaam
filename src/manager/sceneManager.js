@@ -1,6 +1,7 @@
 import GameManager from './gameManager.js';
 
 /**
+ * Manages scene by adding,removing,stopping and starting particular scene.
  * @public
  * @class
  */
@@ -18,16 +19,21 @@ class SceneManager {
 	static #initialized = false;
 
 	/**
+	 *
 	 * @type {GameManager}
 	 */
 	#gameManager;
 
 	/**
-	 * map of all scenes
+	 * map of all scenes.
 	 * @type {Object.<string, Scene>}
 	 */
 	#scenes;
-
+	/**
+	 * Initiate instance of scene manager.
+	 * @constructor
+	 * @public
+	 */
 	constructor() {
 		if (SceneManager.#initialized) {
 			throw new Error('Class constructor is private. Use getInstance to get an instance.');
@@ -39,6 +45,7 @@ class SceneManager {
 	}
 
 	/**
+	 * Returns the singleton instance of scene manager.
 	 * @returns {SceneManager}
 	 */
 	static get instance() {
