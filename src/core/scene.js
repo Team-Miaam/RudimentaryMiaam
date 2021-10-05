@@ -1,5 +1,7 @@
 import Loader from '../loader/loader.js';
+import { preProcessTilesets } from '../util/layer/layer.js';
 import View from '../view/view.js';
+import World from '../world/world.js';
 
 class Scene {
 	static loader;
@@ -13,6 +15,8 @@ class Scene {
 	#map;
 
 	#view;
+
+	#world;
 
 	static get loader() {
 		return this.loader;
@@ -91,15 +95,13 @@ class Scene {
 
 	set map(map) {
 		this.#map = map;
-		this.view = new View(this.map);
+		preProcessTilesets(this.map);
+		this.#world = new World(this.map);
+		this.#view = new View(this.map);
 	}
 
 	get map() {
 		return this.#map;
-	}
-
-	set view(view) {
-		this.#view = view;
 	}
 
 	get view() {

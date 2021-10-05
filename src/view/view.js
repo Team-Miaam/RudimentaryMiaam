@@ -1,20 +1,13 @@
 import { Container } from 'pixi.js';
-import { getFileNameWithoutExtension } from '../util/path.js';
 import layerTypeRendererRegistry from './layerType.js';
+import { constructLayerMap } from '../util/layer/layer.js';
 
 class View extends Container {
 	#layers;
 
 	constructor(map) {
 		super();
-		this.#layers = {};
-		map.data.layers.forEach((layer) => {
-			this.#layers[layer.name] = layer;
-		});
-		map.data.tilesets.forEach((tileset) => {
-			tileset.data = map.tilesets[tileset.name].data;
-			tileset.data.image = map.tilesets[tileset.name].images[getFileNameWithoutExtension(tileset.data.image)];
-		});
+		this.#layers = constructLayerMap(map);
 		this.#renderLayers(map.data);
 	}
 
@@ -35,7 +28,7 @@ class View extends Container {
 		if (objectData !== undefined) {
 			object.transform = {
 				x: objectData.x,
-				y: objectData.y,
+				y: objectData.y - objectData.height,
 				rotation: objectData.rotation,
 			};
 		}
