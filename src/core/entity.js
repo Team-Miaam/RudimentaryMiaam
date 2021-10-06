@@ -14,6 +14,8 @@ class Entity {
 
 	#sprite;
 
+	body;
+
 	static Load() {
 		this.loader = new Loader();
 		this.preload = this.preload
@@ -32,14 +34,14 @@ class Entity {
 		return this.loader;
 	}
 
-	constructor({ name }) {
+	constructor({ name, props }) {
 		// TODO: throw exception when entity is not loaded
 		this.#name = name;
 		this.#active = false;
-		this.onStart();
+		this.onStart(props);
 	}
 
-	onStart() {}
+	onStart(props) {}
 
 	onUpdate(ticker) {}
 

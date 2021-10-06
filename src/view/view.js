@@ -8,10 +8,10 @@ class View extends Container {
 	constructor(map) {
 		super();
 		this.#layers = constructLayerMap(map);
-		this.#renderLayers(map.data);
+		this.#constructSprites(map.data);
 	}
 
-	#renderLayers(map) {
+	#constructSprites(map) {
 		Object.values(this.#layers).forEach((layer) => {
 			const renderedLayerContainer = new layerTypeRendererRegistry[layer.type]({
 				layer,

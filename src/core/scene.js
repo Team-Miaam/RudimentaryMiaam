@@ -82,6 +82,7 @@ class Scene {
 	addEntity({ layer, entity }) {
 		this.#entities[entity.name] = entity;
 		this.view.addObjectToLayer({ layer, object: entity });
+		this.world.addObjectToLayer({ layer, object: entity });
 	}
 
 	removeEntity(entity) {
@@ -106,6 +107,10 @@ class Scene {
 
 	get view() {
 		return this.#view;
+	}
+
+	get world() {
+		return this.#world;
 	}
 }
 

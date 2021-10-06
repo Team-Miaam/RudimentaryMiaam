@@ -1,4 +1,5 @@
 import GameManager from './gameManager.js';
+import PhysicsManager from './physicsManager.js';
 
 /**
  * @public
@@ -22,6 +23,8 @@ class SceneManager {
 	 */
 	#gameManager;
 
+	#physicsManager;
+
 	/**
 	 * map of all scenes
 	 * @type {Object.<string, Scene>}
@@ -30,12 +33,12 @@ class SceneManager {
 
 	constructor() {
 		if (SceneManager.#initialized) {
-			throw new Error('Class constructor is private. Use getInstance to get an instance.');
+			throw new Error('Class constructor is private. Use get instance to get an instance.');
 		}
 		this.#scenes = {};
 		this.#gameManager = GameManager.instance;
+		this.#physicsManager = PhysicsManager.instance;
 		SceneManager.#initialized = true;
-		SceneManager.#instance = this;
 	}
 
 	/**
@@ -65,8 +68,8 @@ class SceneManager {
 		const scene = this.#scenes[sceneName];
 		if (!scene.isActive) {
 			scene.isActive = true;
-			this.#gameManager.app.ticker.add((ticker) => {
-				scene.onUpdate(ticker);
+			this.#gameManager.app.ticker.add((delta) => {
+				scene.onUpdate(delta);
 			});
 		}
 	}
@@ -101,6 +104,11 @@ class SceneManager {
 	set view(sceneName) {
 		const { view } = this.#scenes[sceneName];
 		this.#gameManager.app.stage.addChild(view);
+	}
+
+	set world(sceneName) {
+		const { world } = this.#scenes[sceneName];
+		this.#physicsManager.engine.world = world.composite;
 	}
 }
 export default SceneManager;
