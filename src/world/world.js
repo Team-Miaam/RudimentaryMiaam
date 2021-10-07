@@ -21,11 +21,9 @@ class World {
 			const renderedLayerComposite = new layerTypeRendererRegistry[layer.type]({
 				layer,
 			});
-			// if (renderedLayerComposite.constructor.name === 'ObjectGroup') {
 			renderedLayerComposite.constructBodies(map);
 			Composite.add(this.composite, renderedLayerComposite.composite);
 			layer.composite = renderedLayerComposite.composite;
-			// }
 		});
 	}
 

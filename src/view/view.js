@@ -32,7 +32,9 @@ class View extends Container {
 				rotation: objectData.rotation,
 			};
 		}
-		layer.container.addChild(object.sprite);
+		if (object.sprite !== undefined) {
+			layer.container.addChild(object.sprite);
+		}
 	}
 }
 

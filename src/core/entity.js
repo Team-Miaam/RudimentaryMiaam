@@ -1,8 +1,6 @@
+import { Body } from 'matter-js';
 import Loader from '../loader/loader.js';
 
-/**
- *
- */
 class Entity {
 	static loader;
 
@@ -12,7 +10,7 @@ class Entity {
 
 	#active;
 
-	#sprite;
+	sprite;
 
 	body;
 
@@ -43,7 +41,11 @@ class Entity {
 
 	onStart(props) {}
 
-	onUpdate(ticker) {}
+	onUpdate(ticker) {
+		if (this.body !== undefined) {
+			this.transform = { x: this.body.position.x, y: this.body.position.y, rotation: this.body.angle };
+		}
+	}
 
 	onDestroy() {}
 
@@ -56,7 +58,22 @@ class Entity {
 	}
 
 	set isActive(active) {
-		this.#active = active;
+		if (active) {
+			this.#active = true;
+		} else {
+			this.#active = true;
+		}
+	}
+
+	#updateSpriteTransform({ x = this.sprite.x, y = this.sprite.y, rotation = this.sprite.rotation }) {
+		this.sprite.x = x;
+		this.sprite.y = y;
+		this.sprite.rotation = rotation;
+	}
+
+	#updateBodyTransform({ x = this.body.position.x, y = this.body.position.y, rotation = this.body.angle }) {
+		Body.set(this.body, 'position', { x, y });
+		Body.set(this.body, 'angle', rotation);
 	}
 
 	get transform() {
@@ -68,17 +85,17 @@ class Entity {
 	}
 
 	set transform(transform) {
-		Object.entries(transform).forEach(([key, value]) => {
-			this.#sprite[key] = value;
-		});
-	}
-
-	get sprite() {
-		return this.#sprite;
-	}
-
-	set sprite(sprite) {
-		this.#sprite = sprite;
+		if (this.body !== undefined) {
+			this.#updateBodyTransform({
+				x: transform.x,
+				y: transform.y,
+				rotation: transform.rotation,
+			});
+			// this.#updateBodyTransform(transform);
+			this.#updateSpriteTransform({ x: this.body.position.x, y: this.body.position.y, rotation: this.body.angle });
+		} else {
+			this.#updateSpriteTransform(transform);
+		}
 	}
 }
 
