@@ -1,4 +1,5 @@
 import Loader from '../loader/loader.js';
+import PhysicsManager from '../manager/physicsManager.js';
 import { preProcessTilesets } from '../util/layer/layer.js';
 import View from '../view/view.js';
 import World from '../world/world.js';
@@ -17,6 +18,8 @@ class Scene {
 	#view;
 
 	#world;
+
+	processed = false;
 
 	static get loader() {
 		return this.loader;
@@ -39,6 +42,7 @@ class Scene {
 					entities: [],
 			  };
 		const { preload } = this.constructor;
+		this.isLoaded = false;
 		this.constructor.loader = new Loader();
 		this.constructor.loader.loadAssets(preload.assets);
 		this.constructor.loader.onComplete.add(() => {
@@ -53,7 +57,8 @@ class Scene {
 			Entity.loader.onComplete.add(() => {
 				entitiesLoaded += 1;
 				if (entitiesLoaded === preload.entities.length) {
-					this.onStart();
+					this.isLoaded = true;
+					console.log('scene loaded');
 				}
 			});
 		});
@@ -69,6 +74,7 @@ class Scene {
 
 	onDestroy() {
 		this.loader.destroy();
+		this.view.destroy();
 	}
 
 	get isActive() {
@@ -96,7 +102,11 @@ class Scene {
 
 	set map(map) {
 		this.#map = map;
-		preProcessTilesets(this.map);
+		if (!this.processed) {
+			preProcessTilesets(this.map);
+			this.processed = true;
+		}
+		PhysicsManager.instance.reset();
 		this.#world = new World(this.map);
 		this.#view = new View(this.map);
 	}
