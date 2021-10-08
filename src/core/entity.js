@@ -32,7 +32,7 @@ class Entity {
 		return this.loader;
 	}
 
-	constructor({ name, props }) {
+	constructor({ name, props = {} }) {
 		// TODO: throw exception when entity is not loaded
 		this.#name = name;
 		this.#active = false;

@@ -1,6 +1,6 @@
 import { Composite } from 'matter-js';
 import layerTypeRendererRegistry from './layerType.js';
-import { constructLayerMap } from '../util/layer/layer.js';
+import { constructLayerMap, constructPropertiesMap } from '../util/layer/layer.js';
 
 class World {
 	#composite;
@@ -15,7 +15,8 @@ class World {
 
 	#constructComposites(map) {
 		Object.values(this.#layers).forEach((layer) => {
-			if (layer.type !== 'objectgroup' && layer.properties === undefined) {
+			layer.properties = constructPropertiesMap(layer.properties);
+			if (layer.type !== 'objectgroup' && layer.properties.isStatic === undefined) {
 				return;
 			}
 			const renderedLayerComposite = new layerTypeRendererRegistry[layer.type]({

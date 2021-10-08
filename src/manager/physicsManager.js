@@ -7,11 +7,14 @@ class PhysicsManager {
 
 	#engine;
 
+	#events;
+
 	constructor() {
 		if (PhysicsManager.#initialized) {
 			throw new Error('Class constructor is private. Use get instance method instead');
 		}
 		this.#engine = Engine.create();
+		this.#events = document.createElement('div');
 		PhysicsManager.#initialized = true;
 	}
 
@@ -28,6 +31,10 @@ class PhysicsManager {
 
 	get engine() {
 		return this.#engine;
+	}
+
+	get events() {
+		return this.#events;
 	}
 }
 

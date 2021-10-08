@@ -17,4 +17,15 @@ const preProcessTilesets = (map) => {
 	});
 };
 
-export { constructLayerMap, preProcessTilesets };
+const constructPropertiesMap = (properties) => {
+	const propertiesMap = {};
+	if (properties !== undefined) {
+		properties.forEach(({ name, value }) => {
+			propertiesMap[name] = value;
+		});
+	}
+
+	return propertiesMap;
+};
+
+export { constructLayerMap, preProcessTilesets, constructPropertiesMap };
