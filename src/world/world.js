@@ -16,7 +16,7 @@ class World {
 	#constructComposites(map) {
 		Object.values(this.#layers).forEach((layer) => {
 			layer.properties = constructPropertiesMap(layer.properties);
-			if (layer.type !== 'objectgroup' && layer.properties.isStatic === undefined) {
+			if (layer.properties.physics === undefined) {
 				return;
 			}
 			const renderedLayerComposite = new layerTypeRendererRegistry[layer.type]({
