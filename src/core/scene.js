@@ -62,6 +62,9 @@ class Scene {
 				}
 			});
 		});
+		if (preload.entities.length === 0) {
+			this.isLoaded = true;
+		}
 	}
 
 	onStart() {}
