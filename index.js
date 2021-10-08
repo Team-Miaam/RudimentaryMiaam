@@ -1,4 +1,4 @@
-import { Sprite, groupD8, Graphics } from 'pixi.js';
+import { Sprite, groupD8, Graphics, BitmapText } from 'pixi.js';
 import { Bodies, Composites } from 'matter-js';
 import GameManager from './src/manager/gameManager.js';
 import PhysicsManager from './src/manager/physicsManager.js';
@@ -22,6 +22,7 @@ export {
 	Keyboard,
 	Sprite,
 	Graphics,
+	BitmapText,
 	Dialogue,
 	groupD8,
 	PhysicsManager,
