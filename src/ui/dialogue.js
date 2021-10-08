@@ -1,4 +1,4 @@
-import { Graphics, Text } from 'pixi.js';
+import { Graphics, Text, BitmapText } from 'pixi.js';
 import GameManager from '../manager/gameManager';
 import { Keyboard } from '../input/keyboard/keyboard';
 
@@ -7,14 +7,17 @@ class Dialogue {
 
 	hasBoxCreated = false;
 
-	dialogues = new Text('');
+	dialogues;
 
 	whiteBox = new Graphics();
 
 	app = GameManager.instance.app;
 
-	constructor(queue) {
+	fontName;
+
+	constructor(queue, fontName) {
 		this.queue = queue;
+		this.fontName = fontName;
 		this.initiateDialogues();
 		this.initiateWhiteBox();
 		this.app.stage.addChild(this.whiteBox);
@@ -23,12 +26,17 @@ class Dialogue {
 
 	initiateWhiteBox() {
 		this.whiteBox.lineStyle(10, 0x000000, 5);
-		this.whiteBox.beginFill(0xffffff);
+		this.whiteBox.beginFill(0x000000);
 		this.whiteBox.drawRect(5, 402, 502, 105);
 		this.whiteBox.endFill();
 	}
 
 	initiateDialogues() {
+		this.dialogues = new BitmapText('', {
+			fontName: this.fontName,
+			align: 'left',
+			maxWidth: 512,
+		});
 		this.dialogues.x = 10;
 		this.dialogues.y = 402;
 		this.queue.push(' ');
