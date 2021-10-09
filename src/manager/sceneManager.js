@@ -3,6 +3,7 @@ import GameManager from './gameManager.js';
 import PhysicsManager from './physicsManager.js';
 
 /**
+ * Manages scene by adding,removing,stopping and starting particular scene.
  * @public
  * @class
  */
@@ -20,6 +21,7 @@ class SceneManager {
 	static #initialized = false;
 
 	/**
+	 *
 	 * @type {GameManager}
 	 */
 	#gameManager;
@@ -27,13 +29,18 @@ class SceneManager {
 	#physicsManager;
 
 	/**
-	 * map of all scenes
+	 * map of all scenes.
 	 * @type {Object.<string, Scene>}
 	 */
 	#scenes;
 
 	currentScene;
 
+	/**
+	 * Initiate instance of scene manager.
+	 * @constructor
+	 * @public
+	 */
 	constructor() {
 		if (SceneManager.#initialized) {
 			throw new Error('Class constructor is private. Use get instance to get an instance.');
@@ -49,6 +56,7 @@ class SceneManager {
 	}
 
 	/**
+	 * Returns the singleton instance of scene manager.
 	 * @returns {SceneManager}
 	 */
 	static get instance() {
