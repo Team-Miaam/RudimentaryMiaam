@@ -7,7 +7,7 @@ on:
   push:
     branches: [master]
     tags:
-      - "v*"
+      - 'v*'
 
 jobs:
   release:
@@ -28,13 +28,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
-      - run: npm run build 
+      - run: npm run build
 
       - name: Automatic Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: 'marvinpinto/action-automatic-releases@latest'
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ github.ref }}"
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          automatic_release_tag: '${{ github.sha }}'
           prerelease: false
           files: |
             ./dist/index.js
