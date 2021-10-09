@@ -14,6 +14,8 @@ class Dialogue {
 
 	fontName;
 
+	onComplete;
+
 	constructor(queue, fontName) {
 		this.queue = queue;
 		this.fontName = fontName;
@@ -49,6 +51,7 @@ class Dialogue {
 		if (this.queue.length > 1) {
 			this.dialogues.text = this.queue.shift();
 		} else {
+			this.onComplete();
 			this.destroy();
 		}
 	}
