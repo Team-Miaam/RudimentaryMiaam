@@ -36,7 +36,7 @@ class Dialogue {
 		this.dialogues = new BitmapText('', {
 			fontName: this.fontName,
 			align: 'left',
-			maxWidth: 512,
+			maxWidth: GameManager.instance.app.screen.width - 10,
 		});
 		this.dialogues.x = 10;
 		this.dialogues.y = 402 + 10;
