@@ -26,9 +26,9 @@ class Dialogue {
 	}
 
 	initiateWhiteBox() {
-		this.whiteBox.lineStyle(10, 0x000000, 5);
+		this.whiteBox.lineStyle(3, 0xffffff, 1);
 		this.whiteBox.beginFill(0x000000);
-		this.whiteBox.drawRect(5, 402, 502, 105);
+		this.whiteBox.drawRect(0, 402, GameManager.instance.app.screen.width, 110);
 		this.whiteBox.endFill();
 	}
 
@@ -39,7 +39,7 @@ class Dialogue {
 			maxWidth: 512,
 		});
 		this.dialogues.x = 10;
-		this.dialogues.y = 402;
+		this.dialogues.y = 402 + 10;
 		this.queue.push(' ');
 		this.nextText();
 	}
@@ -51,13 +51,16 @@ class Dialogue {
 		if (this.queue.length > 1) {
 			this.dialogues.text = this.queue.shift();
 		} else {
-			this.onComplete();
+			if (this.onComplete !== undefined) {
+				this.onComplete();
+			}
 			this.destroy();
 		}
 	}
 
 	destroy() {
 		if (this.whiteBox !== undefined) {
+			this.onComplete = undefined;
 			this.whiteBox.destroy();
 			this.dialogues.destroy();
 			this.whiteBox = undefined;
