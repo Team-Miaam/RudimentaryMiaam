@@ -120,12 +120,21 @@ class SceneManager {
 	 */
 	set view(sceneName) {
 		const { view } = this.#scenes[sceneName];
+		this.#clearStage();
 		this.#gameManager.app.stage.addChild(view);
 	}
 
 	set world(sceneName) {
 		const { world } = this.#scenes[sceneName];
 		this.#physicsManager.engine.world = world.composite;
+	}
+
+	#clearStage() {
+		const { stage } = this.#gameManager.app;
+
+		for (let i = stage.children.length - 1; i >= 0; i--) {
+			stage.removeChild(stage.children[i]);
+		}
 	}
 }
 export default SceneManager;
