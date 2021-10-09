@@ -1,5 +1,8 @@
 import Loader from '../loader/loader.js';
+import PhysicsManager from '../manager/physicsManager.js';
+import { preProcessTilesets } from '../util/layer/layer.js';
 import View from '../view/view.js';
+import World from '../world/world.js';
 
 class Scene {
 	static loader;
@@ -13,6 +16,10 @@ class Scene {
 	#map;
 
 	#view;
+
+	#world;
+
+	processed = false;
 
 	static get loader() {
 		return this.loader;
@@ -35,6 +42,7 @@ class Scene {
 					entities: [],
 			  };
 		const { preload } = this.constructor;
+		this.isLoaded = false;
 		this.constructor.loader = new Loader();
 		this.constructor.loader.loadAssets(preload.assets);
 		this.constructor.loader.onComplete.add(() => {
@@ -49,10 +57,14 @@ class Scene {
 			Entity.loader.onComplete.add(() => {
 				entitiesLoaded += 1;
 				if (entitiesLoaded === preload.entities.length) {
-					this.onStart();
+					this.isLoaded = true;
+					console.log('scene loaded');
 				}
 			});
 		});
+		if (preload.entities.length === 0) {
+			this.isLoaded = true;
+		}
 	}
 
 	onStart() {}
@@ -65,6 +77,7 @@ class Scene {
 
 	onDestroy() {
 		this.loader.destroy();
+		this.view.destroy();
 	}
 
 	get isActive() {
@@ -78,6 +91,7 @@ class Scene {
 	addEntity({ layer, entity }) {
 		this.#entities[entity.name] = entity;
 		this.view.addObjectToLayer({ layer, object: entity });
+		this.world.addObjectToLayer({ layer, object: entity });
 	}
 
 	removeEntity(entity) {
@@ -91,19 +105,25 @@ class Scene {
 
 	set map(map) {
 		this.#map = map;
-		this.view = new View(this.map);
+		if (!this.processed) {
+			preProcessTilesets(this.map);
+			this.processed = true;
+		}
+		PhysicsManager.instance.reset();
+		this.#world = new World(this.map);
+		this.#view = new View(this.map);
 	}
 
 	get map() {
 		return this.#map;
 	}
 
-	set view(view) {
-		this.#view = view;
-	}
-
 	get view() {
 		return this.#view;
+	}
+
+	get world() {
+		return this.#world;
 	}
 }
 

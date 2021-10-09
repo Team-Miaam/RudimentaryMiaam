@@ -34,7 +34,6 @@ class GameManager {
 			throw new Error('Use getInstance to get an instance.');
 		}
 		GameManager.#initialized = true;
-		GameManager.#instance = this;
 		Keyboard.bindEventListener(window);
 	}
 

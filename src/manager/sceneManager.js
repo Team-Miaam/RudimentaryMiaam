@@ -1,4 +1,6 @@
+import { Composite } from 'matter-js';
 import GameManager from './gameManager.js';
+import PhysicsManager from './physicsManager.js';
 
 /**
  * @public
@@ -22,20 +24,28 @@ class SceneManager {
 	 */
 	#gameManager;
 
+	#physicsManager;
+
 	/**
 	 * map of all scenes
 	 * @type {Object.<string, Scene>}
 	 */
 	#scenes;
 
+	currentScene;
+
 	constructor() {
 		if (SceneManager.#initialized) {
-			throw new Error('Class constructor is private. Use getInstance to get an instance.');
+			throw new Error('Class constructor is private. Use get instance to get an instance.');
 		}
 		this.#scenes = {};
+		this.currentScene = {
+			name: '',
+			ticker: undefined,
+		};
 		this.#gameManager = GameManager.instance;
+		this.#physicsManager = PhysicsManager.instance;
 		SceneManager.#initialized = true;
-		SceneManager.#instance = this;
 	}
 
 	/**
@@ -65,9 +75,19 @@ class SceneManager {
 		const scene = this.#scenes[sceneName];
 		if (!scene.isActive) {
 			scene.isActive = true;
-			this.#gameManager.app.ticker.add((ticker) => {
-				scene.onUpdate(ticker);
-			});
+			const interval = setInterval(() => {
+				if (scene.isLoaded) {
+					scene.onStart();
+					this.currentScene = {
+						name: sceneName,
+						ticker: (delta) => {
+							scene.onUpdate(delta);
+						},
+					};
+					this.#gameManager.app.ticker.add(this.currentScene.ticker, this.#gameManager.app);
+					clearInterval(interval);
+				}
+			}, 1000);
 		}
 	}
 
@@ -75,12 +95,10 @@ class SceneManager {
 	 * stop updating the scene if active
 	 * @param {string} sceneName
 	 */
-	stopScene(sceneName) {
-		const scene = this.#scenes[sceneName];
-		if (scene.isActive) {
-			scene.isActive = false;
-			// TODO: update the ticker
-		}
+	stopScene() {
+		const scene = this.#scenes[this.currentScene.name];
+		this.#gameManager.app.ticker.remove(this.currentScene.ticker, this.#gameManager.app);
+		scene.isActive = false;
 	}
 
 	/**
@@ -89,7 +107,9 @@ class SceneManager {
 	 */
 	removeScene(sceneName) {
 		const scene = this.#scenes[sceneName];
-		// TODO: updater the ticker
+		if (this.currentScene.name === sceneName) {
+			this.stopScene();
+		}
 		scene.onDestroy();
 		delete this.#scenes[sceneName];
 	}
@@ -100,7 +120,21 @@ class SceneManager {
 	 */
 	set view(sceneName) {
 		const { view } = this.#scenes[sceneName];
+		this.#clearStage();
 		this.#gameManager.app.stage.addChild(view);
+	}
+
+	set world(sceneName) {
+		const { world } = this.#scenes[sceneName];
+		this.#physicsManager.engine.world = world.composite;
+	}
+
+	#clearStage() {
+		const { stage } = this.#gameManager.app;
+
+		for (let i = stage.children.length - 1; i >= 0; i--) {
+			stage.removeChild(stage.children[i]);
+		}
 	}
 }
 export default SceneManager;
