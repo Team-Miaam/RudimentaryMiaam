@@ -1,6 +1,5 @@
-import { Graphics, Text, BitmapText } from 'pixi.js';
-import GameManager from '../manager/gameManager';
-import { Keyboard } from '../input/keyboard/keyboard';
+import { Graphics, BitmapText } from 'pixi.js';
+import GameManager from '../manager/gameManager.js';
 
 class Dialogue {
 	queue = [];
@@ -50,6 +49,12 @@ class Dialogue {
 		if (this.queue.length > 1) {
 			this.dialogues.text = this.queue.shift();
 		} else {
+			this.destroy();
+		}
+	}
+
+	destroy() {
+		if (this.whiteBox !== undefined) {
 			this.whiteBox.destroy();
 			this.dialogues.destroy();
 			this.whiteBox = undefined;

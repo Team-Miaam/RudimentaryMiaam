@@ -9,7 +9,7 @@ const assetTypeLoaderRegistry = {
 	tileset: loadTileset,
 	image: loadImage,
 	animation: loadAnimation,
-	font: loadFont
+	font: loadFont,
 };
 
 export default assetTypeLoaderRegistry;

@@ -1,4 +1,3 @@
-
 const loadFont = (loader, assets, asset) => {
 	loader.add(asset.name, asset.url);
 	let { fonts } = loader.loadedAssets;
