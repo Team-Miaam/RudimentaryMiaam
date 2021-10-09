@@ -1,5 +1,5 @@
 import { Sprite, groupD8, Graphics, BitmapText } from 'pixi.js';
-import { Bodies, Composites } from 'matter-js';
+import { Bodies, Composites, SAT as Collision } from 'matter-js';
 import GameManager from './src/manager/gameManager.js';
 import PhysicsManager from './src/manager/physicsManager.js';
 import SceneManager from './src/manager/sceneManager.js';
@@ -28,4 +28,5 @@ export {
 	PhysicsManager,
 	Bodies,
 	Composites,
+	Collision,
 };
