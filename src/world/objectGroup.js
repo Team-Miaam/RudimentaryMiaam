@@ -28,7 +28,14 @@ class ObjectGroup extends Layer {
 					Events.on(PhysicsManager.instance.engine, 'collisionStart', (event) => {
 						const pairs = event.pairs[0];
 						if (pairs.bodyA.label === object.name) {
-							const eventTrigger = new CustomEvent(object.name, { detail: event });
+							const eventTrigger = new CustomEvent(`collisionStart.${object.name}`, { detail: event });
+							PhysicsManager.instance.events.dispatchEvent(eventTrigger);
+						}
+					});
+					Events.on(PhysicsManager.instance.engine, 'collisionEnd', (event) => {
+						const pairs = event.pairs[0];
+						if (pairs.bodyA.label === object.name) {
+							const eventTrigger = new CustomEvent(`collisionEnd.${object.name}`, { detail: event });
 							PhysicsManager.instance.events.dispatchEvent(eventTrigger);
 						}
 					});
