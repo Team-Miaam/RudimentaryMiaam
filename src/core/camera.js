@@ -1,22 +1,63 @@
-/**Class representing game camera */
+/**
+ * Camera shows the specified area of a map.
+ *  It follows and center over an [entity]{@link Entity}
+ * @class 
+ */
 class Camera {
 	/**
-	 * 
+	 * @private
+	 * @type {View}
 	 */
 	#view;
 
+	/**
+	 * width of the view 
+	 * @private
+	 * @type {float}
+	 */
 	#width;
 
+	/**
+	 * height of the view 
+	 * @private
+	 * @type {float}
+	 */
 	#height;
 
+	/**
+	 * x position on the map of the camera 
+	 * @private
+	 * @type {float}
+	 */
 	#x;
 
+	/**
+	 * y position on the map of the camera 
+	 * @private
+	 * @type {float}
+	 */
 	#y;
 
+	/**
+	 * width of world map
+	 * @private
+	 * @type {float}
+	 */
 	#worldWidth;
 
+	/**
+	 * height of world map
+	 * @private
+	 * @type {float}
+	 */
 	#worldHeight;
-
+	/**
+	 * @public
+	 * @constructor
+	 * @param {Scene} scene 
+	 * @param {float} cameraWidth 
+	 * @param {float} cameraHeight 
+	 */
 	constructor(scene, cameraWidth, cameraHeight) {
 		this.#view = scene.view;
 		this.#width = cameraWidth;
@@ -30,19 +71,39 @@ class Camera {
 	// When you change the camera's position,
 	// they shift the position of the world in the opposite direction
 
+	/**
+	 * returns camera x position
+	 * @public
+	 * @returns {float}
+	 */
 	get x() {
 		return this.#x;
 	}
 
+	/**
+	 * sets camera x position
+	 * @public
+	 * @param {float}
+	 */
 	set x(value) {
 		this.#x = value;
 		this.#view.x = -value;
 	}
 
+	/**
+	 * returns camera y position
+	 * @public
+	 * @returns {float}
+	 */
 	get y() {
 		return this.#y;
 	}
 
+	/**
+	 * sets camera y position
+	 * @public
+	 * @param {float}
+	 */
 	set y(value) {
 		this.#y = value;
 		this.#view.y = -value;
@@ -54,22 +115,46 @@ class Camera {
 	// crosses this boundary, the `follow` function ahead will change
 	// the camera's x and y position to scroll the game world
 
+	/**
+	 * returns boundery of camera movement to right
+	 * @public
+	 * @returns {float}
+	 */
 	get rightInnerBoundary() {
 		return this.x + this.#width / 2 + this.#width / 4;
 	}
 
+	/**
+	 * returns boundery of camera movement to left
+	 * @public
+	 * @returns {float}
+	 */
 	get leftInnerBoundary() {
 		return this.x + this.#width / 2 - this.#width / 4;
 	}
 
+	/**
+	 * returns boundery of camera movement to top
+	 * @public
+	 * @returns {float}
+	 */
 	get topInnerBoundary() {
 		return this.y + this.#height / 2 - this.#height / 4;
 	}
 
+	/**
+	 * returns boundery of camera movement to bottom
+	 * @public
+	 * @returns {float}
+	 */
 	get bottomInnerBoundary() {
 		return this.y + this.#height / 2 + this.#height / 4;
 	}
 
+	/**
+	 * camera will follow the given [entity]{@link Entity}
+	 * @param {Entity} entity 
+	 */
 	follow(entity) {
 		const { sprite } = entity;
 		// Check the sprites position in relation to the inner
@@ -103,6 +188,10 @@ class Camera {
 	}
 
 	// Use the `centerOver` method to center the camera over a sprite
+	/**
+	 * Camera will centerover given [entity]{@link Entity}
+	 * @param {Entity} entity 
+	 */
 	centerOver(entity) {
 		const { sprite } = entity;
 		const halfWidth = sprite.width / 2;

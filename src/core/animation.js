@@ -3,9 +3,20 @@ import { getFileNameWithoutExtension } from '../util/path.js';
 import { snip } from '../util/spritesheet.js';
 import { cloneArray } from '../util/common.js';
 
+/**
+ * animated sprite based on states
+ * @class 
+ */
 class AnimatedSpriteWState extends AnimatedSprite {
+	/**
+	 * @private
+	 * @type {Sprite}
+	 */
 	#states;
-
+	/**
+	 * @public
+	 * @param {Object} animationMap 
+	 */
 	constructor(animationMap) {
 		super([Texture.EMPTY]);
 		this.#states = { normal: { original: {} } };
@@ -19,7 +30,11 @@ class AnimatedSpriteWState extends AnimatedSprite {
 		this.#generateNormalTextures(animationMap.data);
 		this.state = { state: animationMap.data.layers[0].name };
 	}
-
+	/**
+	 * generates animation from given atlas or animation map
+	 * @private
+	 * @param {Object} animationMap 
+	 */
 	#generateNormalTextures(animationMap) {
 		const states = animationMap.layers;
 		const tileset = animationMap.tilesets[0].data;
@@ -50,7 +65,12 @@ class AnimatedSpriteWState extends AnimatedSprite {
 			});
 		});
 	}
-
+	/**
+	 * 
+	 * @param {String} from
+	 * @param {String} rotationName
+	 * @param {String} rotationGroup
+	 */
 	generateRotatedTextures({ from = 'normal', rotationName, rotationGroup }) {
 		this.#states[rotationName] = { original: {} };
 		const rotatedTextures = this.#states[rotationName].original;
@@ -62,7 +82,13 @@ class AnimatedSpriteWState extends AnimatedSprite {
 			});
 		});
 	}
-
+	/**
+	 * 
+	 * @param {Function} f 
+	 * @param {String} rotationName 
+	 * @param {String} fromFunc
+	 * @param {String} state
+	 */
 	generateFunctionalTextures({ f, rotationName = 'normal', fromFunc = 'original', state }) {
 		const textures = this.#states[rotationName][fromFunc][state];
 		const texturesClone = cloneArray(textures);
@@ -70,6 +96,16 @@ class AnimatedSpriteWState extends AnimatedSprite {
 		this.#states[rotationName][f.name][state] = f(texturesClone);
 	}
 
+	/**
+	 * @public
+	 * @param {String} rotationName
+	 * @param {String} f function name
+	 * @param {String} state
+	 * @param {float} speed animation speed
+	 * @param {float} anchor anchor of a sprite
+	 * @param {Integer} loop -1 refers to infinite loop, 0 means no loop, n means n loops where n<0
+	 * @param {float} angle angular rotation of sprite animation
+	 */
 	set state({ rotationName = 'normal', f = 'original', state, speed, anchor, loop = -1, angle = 0 }) {
 		this.textures = this.#states[rotationName][f][state];
 		if (anchor !== undefined) {
