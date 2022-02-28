@@ -1,7 +1,7 @@
 import { Sound } from '@pixi/sound';
 
 class Audio {
-	#clip;
+	clip;
 
 	#url;
 
@@ -11,16 +11,14 @@ class Audio {
 	}
 
 	createClip = ({ url }) => {
-		this.#clip = Sound.from({
+		this.clip = Sound.from({
 			url,
 			preload: true,
-			loaded: () => {
-			},
 		});
 	};
 
 	play = () => {
-		this.#clip.play();
+		this.clip.play();
 	};
 }
 
