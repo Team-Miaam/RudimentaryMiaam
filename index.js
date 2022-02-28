@@ -10,6 +10,7 @@ import AnimatedSpriteWState from './src/core/animation.js';
 import Camera from './src/core/camera.js';
 import Keyboard from './src/input/keyboard/keyboard.js';
 import Dialogue from './src/ui/dialogue.js';
+import Audio from './src/core/audio.js';
 
 export {
 	GameManager,
@@ -29,4 +30,5 @@ export {
 	Bodies,
 	Composites,
 	Collision,
+	Audio,
 };
