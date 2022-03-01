@@ -1,4 +1,4 @@
-import { Sprite, groupD8, Graphics, BitmapText } from 'pixi.js';
+import { Sprite, groupD8, Graphics, BitmapText, Container } from 'pixi.js';
 import { Bodies, Composites, SAT as Collision } from 'matter-js';
 import GameManager from './src/manager/gameManager.js';
 import PhysicsManager from './src/manager/physicsManager.js';
@@ -12,6 +12,7 @@ import Keyboard from './src/input/keyboard/keyboard.js';
 import Dialogue from './src/ui/dialogue.js';
 import Audio from './src/core/audio.js';
 import AudioSprite from './src/core/audioSprite.js';
+import Slider from './src/ui/Slider.js';
 
 export {
 	GameManager,
@@ -24,6 +25,7 @@ export {
 	Keyboard,
 	Sprite,
 	Graphics,
+	Container,
 	BitmapText,
 	Dialogue,
 	groupD8,
@@ -33,4 +35,5 @@ export {
 	Collision,
 	Audio,
 	AudioSprite,
+	Slider,
 };

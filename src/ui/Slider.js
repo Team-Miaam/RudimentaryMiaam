@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Graphics, Container } from 'pixi.js';
 
 class Slider {
 	#xpos = 50;
@@ -44,7 +44,7 @@ class Slider {
 
 		this.#height = height;
 
-		this.#slider_ = new PIXI.Container();
+		this.#slider_ = new Container();
 
 		this.#radius = this.#height / 2;
 		// Make the slider
@@ -119,7 +119,7 @@ class Slider {
 	setSliderTexture = (texture) => {};
 
 	createSlider = () => {
-		this.rect_ = new PIXI.Graphics()
+		this.rect_ = new Graphics()
 			.beginFill(0x982d16, this.#rectAlpha)
 			.drawRect(this.#xpos, this.#ypos, this.#width, this.#height)
 			.endFill();
@@ -132,7 +132,7 @@ class Slider {
 	};
 
 	createHandle = () => {
-		this.handle_ = new PIXI.Graphics()
+		this.handle_ = new Graphics()
 			.beginFill(this.#handleColor, this.#handleAlpha)
 			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
 			.endFill();

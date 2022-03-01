@@ -52,6 +52,7 @@
 	"dependencies": {
 		"@pixi/sound": "^4.2.0",
 		"matter-js": "^0.17.1",
-		"pixi.js": "^6.1.3"
+		"pixi.js": "^6.2.2",
+		"@pixi/events":	"^6.2.2"
 	}
 }

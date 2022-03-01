@@ -1,5 +1,8 @@
-import { Application } from 'pixi.js';
+import { Application, Renderer } from 'pixi.js';
+import { EventSystem } from '@pixi/events';
 import Keyboard from '../input/keyboard/keyboard.js';
+
+delete Renderer.__plugins.interaction;
 
 /**
  * Game manager
@@ -54,6 +57,12 @@ class GameManager {
 	 */
 	createWindow(options) {
 		this.#app = new Application(options);
+		// Make sure stage covers the whole scene
+		this.#app.stage.hitArea = this.#app.renderer.screen;
+
+		if (!('events' in this.#app.renderer)) {
+			this.#app.renderer.addSystem(EventSystem, 'events');
+		}
 	}
 
 	/**
