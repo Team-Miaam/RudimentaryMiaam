@@ -20,6 +20,16 @@ class Audio {
 	play = () => {
 		this.clip.play();
 	};
+
+	pause = () => {
+		this.clip.pause();
+	}
+
+	destroy = () => {
+		this.clip.destroy();
+	}
+
+	
 }
 
 export default Audio;

@@ -44,7 +44,7 @@ class Dialogue {
 		this.nextText();
 	}
 
-	nextText() {
+	nextText(callback) {
 		if (this.whiteBox === undefined) {
 			return;
 		}
@@ -55,6 +55,9 @@ class Dialogue {
 				this.onComplete();
 			}
 			this.destroy();
+		}
+		if (callback) {
+			callback();
 		}
 	}
 
