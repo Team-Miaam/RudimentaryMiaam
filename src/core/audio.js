@@ -5,16 +5,27 @@ class Audio {
 
 	#url;
 
-	constructor({ url }) {
+	#volume;
+
+	#loop;
+
+	constructor({ url, loop }) {
 		this.#url = url;
-		this.createClip({ url });
+		if (loop) this.createClip({ url, loop });
+		else this.createClip({ url });
+		this.#volume = this.clip.volume;
+		this.#loop = this.clip.loop;
 	}
 
-	createClip = ({ url }) => {
+	createClip = ({ url, loop }) => {
 		this.clip = Sound.from({
 			url,
 			preload: true,
 		});
+		if (loop) {
+			this.#loop = loop;
+		}
+		console.log(this.#loop);
 	};
 
 	play = () => {
@@ -23,13 +34,23 @@ class Audio {
 
 	pause = () => {
 		this.clip.pause();
-	}
+	};
+
+	resume = () => {
+		this.clip.resume();
+	};
 
 	destroy = () => {
 		this.clip.destroy();
+	};
+
+	set volume(volume) {
+		this.#volume = volume;
 	}
 
-	
+	set loop(loop) {
+		this.#loop = loop;
+	}
 }
 
 export default Audio;

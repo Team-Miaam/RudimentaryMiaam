@@ -56,7 +56,7 @@ class Dialogue {
 			}
 			this.destroy();
 		}
-		if (callback) {
+		if (callback && typeof callback === 'function') {
 			callback();
 		}
 	}
