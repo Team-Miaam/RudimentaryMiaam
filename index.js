@@ -11,6 +11,7 @@ import Camera from './src/core/camera.js';
 import Keyboard from './src/input/keyboard/keyboard.js';
 import Dialogue from './src/ui/dialogue.js';
 import Audio from './src/core/audio.js';
+import AudioSprite from './src/core/audioSprite.js';
 
 export {
 	GameManager,
@@ -31,4 +32,5 @@ export {
 	Composites,
 	Collision,
 	Audio,
+	AudioSprite,
 };
