@@ -44,6 +44,10 @@ class Audio {
 		this.clip.destroy();
 	};
 
+	get volume() {
+		return this.#volume
+	}
+
 	set volume(volume) {
 		this.#volume = volume;
 	}

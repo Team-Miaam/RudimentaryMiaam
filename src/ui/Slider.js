@@ -27,7 +27,7 @@ class Slider {
 
 	#radius;
 
-	#value;
+	#value = 0.5;
 
 	#app;
 
@@ -59,6 +59,8 @@ class Slider {
 		this.#handle.interactive = true;
 		this.#handle.buttonMode = true;
 
+		console.log('x: ' + this.#handle.position.x);
+		console.log('pos: ' + this.#value * this.width);
 		this.#handle.addEventListener('pointerdown', this.onDragStart);
 		this.#handle.addEventListener('pointerup', this.onDragEnd);
 		this.#handle.addEventListener('pointerupoutside', this.onDragEnd);
@@ -136,6 +138,7 @@ class Slider {
 			.beginFill(this.#handleColor, this.#handleAlpha)
 			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
 			.endFill();
+		console.log('hpso:' +  (this.#xpos + this.#value * this.#width));
 		return this.handle_;
 	};
 
@@ -167,8 +170,8 @@ class Slider {
 		return this.rect_;
 	}
 
-	get handler_() {
-		return this.handler_;
+	get handle_() {
+		return this.handle_;
 	}
 
 	get slider() {
